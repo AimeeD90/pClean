@@ -33,4 +33,17 @@ public class Config {
         return delta;
     }
 
+    /*calculate the mass difference in ppm for two mass, and the reference mass is mass 1*/
+    public static double deltaPPM(Double mass1, Double mass2) {
+        double delta = 0;
+        try {
+            delta = Math.abs((mass1 - mass2) / mass1 * 1000000);
+        } catch (NullPointerException b) {
+            System.out.println("Exception");
+        } catch (Exception b) {
+            System.out.println("capture exception");
+        }
+        return delta;
+    }
+
 }

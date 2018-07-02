@@ -1,3 +1,5 @@
+import com.compomics.util.experiment.biology.ions.ElementaryIon;
+
 import java.util.*;
 
 /**
@@ -283,6 +285,142 @@ public class JSpectrum {
         return rpn;
     }
 
+
+    /*
+    * Module 1. removal of label-associated ions and of b-/y-ions free windows
+    *
+    * */
+    public void module1(String method, Boolean labelAssociated, Boolean byFreeWinLow, Boolean byFreeWinHigh) {
+        Double isobaric_tag;
+        if (method.equals("iTRAQ4plex")) {
+            isobaric_tag = 144.102063;
+            ArrayList<Double> itraq4Reporters = new ArrayList<Double>();
+            itraq4Reporters.add(114.110679);
+            itraq4Reporters.add(115.107714);
+            itraq4Reporters.add(116.111069);
+            itraq4Reporters.add(117.114424);
+            if (!labelAssociated) {
+                filterLabelAssociatedIons(itraq4Reporters, isobaric_tag);
+            }
+            if (!byFreeWinLow || !byFreeWinHigh) {
+                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+            }
+
+        } else if (method.equals("iTRAQ8plex")) {
+            isobaric_tag = 304.205360;
+            ArrayList<Double> itraq8Reporters = new ArrayList<Double>();
+            itraq8Reporters.add(113.107324);
+            itraq8Reporters.add(114.110679);
+            itraq8Reporters.add(115.107714);
+            itraq8Reporters.add(116.111069);
+            itraq8Reporters.add(117.114424);
+            itraq8Reporters.add(118.111459);
+            itraq8Reporters.add(119.114814);
+            itraq8Reporters.add(121.121523);
+            if (!labelAssociated) {
+                filterLabelAssociatedIons(itraq8Reporters, isobaric_tag);
+            }
+            if (!byFreeWinLow || !byFreeWinHigh) {
+                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+            }
+
+        } else if (method.equals("TMT6plex")) {
+            isobaric_tag = 229.162932;
+            ArrayList<Double> tmt6Reporters = new ArrayList<Double>();
+            tmt6Reporters.add(126.127726);
+            tmt6Reporters.add(127.131080);
+            tmt6Reporters.add(128.134435);
+            tmt6Reporters.add(129.137790);
+            tmt6Reporters.add(130.141145);
+            tmt6Reporters.add(131.138180);
+            if (!labelAssociated) {
+                filterLabelAssociatedIons(tmt6Reporters, isobaric_tag);
+            }
+            if (!byFreeWinLow || !byFreeWinHigh) {
+                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+            }
+
+        } else if (method.equals("TMT10plex")) {
+            isobaric_tag = 229.162932;
+            ArrayList<Double> tmt10Reporters = new ArrayList<Double>();
+            tmt10Reporters.add(126.127726);
+            tmt10Reporters.add(127.1247610);
+            tmt10Reporters.add(127.1310809);
+            tmt10Reporters.add(128.1281158);
+            tmt10Reporters.add(128.1344357);
+            tmt10Reporters.add(129.1314706);
+            tmt10Reporters.add(129.1377905);
+            tmt10Reporters.add(130.1348254);
+            tmt10Reporters.add(130.1411453);
+            tmt10Reporters.add(131.1381802);
+            if (!labelAssociated) {
+                filterLabelAssociatedIons(tmt10Reporters, isobaric_tag);
+            }
+            if (!byFreeWinLow || !byFreeWinHigh) {
+                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+            }
+
+        } else {
+            System.out.println("Please check out the proper setting for labeling method.");
+
+        }
+    }
+
+    private void filterBYfreeWins(Boolean low, Boolean high, Double isobaric_tag) {
+        Double h = ElementaryIon.proton.getTheoreticMass();
+        Double gly = 57.021464;
+        Double arg = 156.101111;
+        Double lys = 128.094963;
+        Double h2o = h * 2 + 15.99491463;
+        Double min_b = isobaric_tag + gly + h;
+        Double max_b = getParentMass() - arg - h2o;
+        Double min_y = arg + h2o + h;      // isobaric_tag + lys + h2o + h;
+        Double max_y = getParentMass() - gly - isobaric_tag - h2o;
+        Double lowWin = Math.min(min_b, min_b);
+        Double highWin = Math.max(max_b, max_y);
+        ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
+        for (JPeak jPeak : getPeaks()) {
+            Double mz = jPeak.getMz();
+            if (low) {
+                if (mz < lowWin - 0.02) {
+                    uninformative.add(jPeak);
+                }
+            }
+            if (high) {
+                if (mz > highWin + 0.02) {
+                    uninformative.add(jPeak);
+                }
+            }
+        }
+        getPeaks().removeAll(uninformative);
+    }
+
+    private void filterLabelAssociatedIons(ArrayList<Double> reporters, Double isobaric_tag) {
+        ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
+        Double labelH = isobaric_tag + ElementaryIon.proton.getTheoreticMass();
+        Double precusorMinuslabel = getParentMass() - isobaric_tag;
+        for (JPeak jPeak : getPeaks()) {
+            Double mz = jPeak.getMz();
+            if (Config.deltaPPM(labelH, mz) <= 20) {
+                uninformative.add(jPeak);
+                continue;
+            }
+            if (Config.deltaPPM(precusorMinuslabel, mz) <= 20) {
+                uninformative.add(jPeak);
+                continue;
+            }
+            for (Double mass : reporters) {
+                if (Config.deltaPPM(mass, mz) <= 20) {
+                    uninformative.add(jPeak);
+                    break;
+                }
+            }
+        }
+        getPeaks().removeAll(uninformative);
+    }
+
+
+
     public double getParentMass() {
         return parentMass;
     }
@@ -290,7 +428,6 @@ public class JSpectrum {
     public void setParentMass(double parentMass) {
         this.parentMass = parentMass;
     }
-
 
 }
 
