@@ -221,6 +221,38 @@ public class JSpectrum {
         }
     }
 
+    /*format the decimal state of mz value*/
+    public void formatMZdeciPoint() {
+        for (int i = 0; i < peaks.size(); i++) {
+            peaks.get(i).setMz(Double.valueOf(String.format("%.4f", peaks.get(i).getMz())));
+        }
+    }
+
+
+
+    /*
+    * Default preprocessing.
+    * 1. remove immonium ions
+    * */
+    public int removeImmoniumIons() {
+        Iterator<JPeak> pListIterator = this.getPeaks().iterator();
+        int rpn = 0;
+        while (pListIterator.hasNext()) {
+            JPeak jPeak = pListIterator.next();
+            if (jPeak.getMz() >= 170) {
+                continue;
+            }
+            for (Double mion : ImmoniumIons.keySet()) {
+                if (Math.abs(jPeak.getMz() - mion) <= Config.ms2tol) {
+                    rpn++;
+                    pListIterator.remove();
+                    break;
+                }
+
+            }
+        }
+        return rpn;
+    }
 
 
 
@@ -308,10 +340,10 @@ public class JSpectrum {
             itraq4Reporters.add(116.111069);
             itraq4Reporters.add(117.114424);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(itraq4Reporters, isobaric_tag, removeRep);
+                doFilterLabelAssociatedIons(itraq4Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
-                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+                doFilterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
             }
 
         } else if (method.equals("iTRAQ8plex")) {
@@ -326,10 +358,10 @@ public class JSpectrum {
             itraq8Reporters.add(119.114814);
             itraq8Reporters.add(121.121523);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(itraq8Reporters, isobaric_tag, removeRep);
+                doFilterLabelAssociatedIons(itraq8Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
-                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+                doFilterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
             }
 
         } else if (method.equals("TMT6plex")) {
@@ -342,10 +374,10 @@ public class JSpectrum {
             tmt6Reporters.add(130.141145);
             tmt6Reporters.add(131.138180);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(tmt6Reporters, isobaric_tag, removeRep);
+                doFilterLabelAssociatedIons(tmt6Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
-                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+                doFilterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
             }
 
         } else if (method.equals("TMT10plex")) {
@@ -362,10 +394,10 @@ public class JSpectrum {
             tmt10Reporters.add(130.1411453);
             tmt10Reporters.add(131.1381802);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(tmt10Reporters, isobaric_tag, removeRep);
+                doFilterLabelAssociatedIons(tmt10Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
-                filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
+                doFilterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
             }
 
         } else {
@@ -374,21 +406,21 @@ public class JSpectrum {
         }
     }
 
-    private void filterBYfreeWins(Boolean low, Boolean high, Double isobaric_tag) {
-        Double h = ElementaryIon.proton.getTheoreticMass();
-        Double gly = 57.021464;
-        Double arg = 156.101111;
-        Double lys = 128.094963;
-        Double h2o = h * 2 + 15.99491463;
-        Double min_b = isobaric_tag + gly + h;
-        Double max_b = getParentMass() - arg - h2o;
-        Double min_y = arg + h2o + h;      // isobaric_tag + lys + h2o + h;
-        Double max_y = getParentMass() - gly - isobaric_tag - h2o;
-        Double lowWin = Math.min(min_b, min_b);
-        Double highWin = Math.max(max_b, max_y);
+    private void doFilterBYfreeWins(Boolean low, Boolean high, Double isobaric_tag) {
+        double h = ElementaryIon.proton.getTheoreticMass();
+        double gly = 57.021464;
+        double arg = 156.101111;
+        double lys = 128.094963;
+        double h2o = h * 2 + 15.99491463;
+        double min_b = isobaric_tag + gly + h;
+        double max_b = getParentMass() - arg - h2o;
+        double min_y = arg + h2o + h;      // isobaric_tag + lys + h2o + h;
+        double max_y = getParentMass() - gly - isobaric_tag - h2o;
+        double lowWin = Math.min(min_b, min_y);
+        double highWin = Math.max(max_b, max_y);
         ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
         for (JPeak jPeak : getPeaks()) {
-            Double mz = jPeak.getMz();
+            double mz = jPeak.getMz();
             if (low) {
                 if (mz < lowWin - 0.02) {
                     uninformative.add(jPeak);
@@ -403,17 +435,17 @@ public class JSpectrum {
         getPeaks().removeAll(uninformative);
     }
 
-    private void filterLabelAssociatedIons(ArrayList<Double> reporters, Double isobaric_tag, Boolean reporter) {
+    private void doFilterLabelAssociatedIons(ArrayList<Double> reporters, double isobaric_tag, Boolean reporter) {
         ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
-        Double h = ElementaryIon.proton.getTheoreticMass();
-        Double labelH = isobaric_tag + h;
-        Double labelH2 = isobaric_tag + h * 2;
-        Double o = 15.994915;
-        Double c = 12.0;
-        Double precusorMinuslabel = getParentMass() - isobaric_tag;
+        double h = ElementaryIon.proton.getTheoreticMass();
+        double labelH = isobaric_tag + h;
+        double labelH2 = isobaric_tag + h * 2;
+        double o = 15.994915;
+        double c = 12.0;
+        double precusorMinuslabel = getParentMass() - isobaric_tag;
 
         for (JPeak jPeak : getPeaks()) {
-            Double mz = jPeak.getMz();
+            double mz = jPeak.getMz();
             /*pClean is designed to preprocess high-resolution MS/MS data, so the */
             /*label-associated ions: label+ */
             if (Config.deltaPPM(labelH, mz) <= Config.ms2tol) {
@@ -439,8 +471,8 @@ public class JSpectrum {
                     }
                 }
 
-                Double repCOH = mass + c + o + h;
-                Double precusorMinusRepCOH = getParentMass() - repCOH;
+                double repCOH = mass + c + o + h;
+                double precusorMinusRepCOH = getParentMass() - repCOH;
                 /*label-associated ions: repCO+ */
                 if (Config.deltaPPM(repCOH, mz) <= Config.ms2tol) {
                     uninformative.add(jPeak);
@@ -461,21 +493,147 @@ public class JSpectrum {
     * Module 2. Isotopic peak reduction & charge deconvolution
     *
     * */
-    public void module2(Boolean isoReduction, Boolean chargeDeconv) {
+    public void module2(Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean filter) {
+        if (isoReduction) {
+            doBackwardSearch();
+            doIsotopicPeakReductionChargeDeconvolution(chargeDeconv);
+            doIonMarge(ionsMarge);
+            doFilterIonsLargerThanPrecursor(filter);
+        } else {
+            fragmentChargePredictionWithoutDeisotoping();
+            doIsotopicPeakReductionChargeDeconvolution(chargeDeconv);
+            doIonMarge(ionsMarge);
+            doFilterIonsLargerThanPrecursor(filter);
+        }
+    }
 
+    private void doFindEnvelopCluster() {
+        /*
+        * Note: Module2 can't handle well with overlap envelops, neither doForwordSearch or doBackwardSearch.
+        * The only difference between these two methods is when different charge state is detected for a peak,
+        * the finial charge state is set as the same with the larger adjacent peak (doForwordSearch) or as the same with
+        * the smaller one (doBackwardSearch). The choice of setting is up to the user.
+        * */
+        doForwardSearch();
+        doBackwardSearch();
+    }
+
+    /*predict charge state of fragment ions and reduce isotopic peaks in a forward search manner*/
+    private void doForwardSearch() {
+        initializeFragmentCharge();
+        int maxcharge = getCharge();
+        double neutron = 1.0033548;
+        sortPeaksByMZ();
+        for (int i = 0; i < getPeaks().size(); i++) {
+            JPeak jPeak1 = getPeaks().get(i);
+            for (int j = i + 1; j < getPeaks().size(); j++) {
+                JPeak jPeak2 = getPeaks().get(j);
+                int charge = maxcharge;
+                while (charge > 0) {
+                    if (Math.abs(jPeak2.getMz() - jPeak1.getMz() - neutron / charge) < 0.02 && jPeak1.getIntensity() > (jPeak2.getIntensity() / 2.0)) {
+                        jPeak2.setIntensity(0.0);
+                        jPeak1.setCharge(charge);
+                        jPeak2.setCharge(charge);
+                    }
+                    charge -= 1;
+                }
+                if ((jPeak2.getMz() - jPeak1.getMz()) > 2) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /*predict charge state of fragment ions and reduce isotopic peaks in a backward search manner*/
+    private void doBackwardSearch() {
+        initializeFragmentCharge();
+        int maxcharge = getCharge();
+        double neutron = 1.0033548;
+        sortPeaksByMZ();
+        Collections.reverse(getPeaks());
+        for (int i = 0; i < getPeaks().size(); i++) {
+            JPeak jPeak1 = getPeaks().get(i);
+            for (int j = i + 1; j < getPeaks().size(); j++) {
+                JPeak jPeak2 = getPeaks().get(j);
+                int charge = maxcharge;
+                while (charge > 0) {
+                    if (Math.abs(jPeak1.getMz() - jPeak2.getMz() - neutron / charge) < 0.02 && jPeak2.getIntensity() > (jPeak1.getIntensity() / 2.0)) {
+                        jPeak1.setIntensity(0.0);
+                        jPeak1.setCharge(charge);
+                        jPeak2.setCharge(charge);
+                    }
+                    charge -= 1;
+                }
+                if ((jPeak1.getMz() - jPeak2.getMz()) > 2) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /*the function is limited to predict charge state of fragment ions, and has done nothing with deisotoping*/
+    private void fragmentChargePredictionWithoutDeisotoping() {
+        initializeFragmentCharge();
+        int maxcharge = getCharge();
+        double neutron = 1.0033548;
+        sortPeaksByMZ();
+        Collections.reverse(getPeaks());
+        for (int i = 0; i < getPeaks().size(); i++) {
+            JPeak jPeak1 = getPeaks().get(i);
+            for (int j = i + 1; j < getPeaks().size(); j++) {
+                JPeak jPeak2 = getPeaks().get(j);
+                int charge = maxcharge;
+                while (charge > 0) {
+                    if (Math.abs(jPeak1.getMz() - jPeak2.getMz() - neutron / charge) < 0.02 && jPeak2.getIntensity() > (jPeak1.getIntensity() / 2.0)) {
+                        jPeak1.setCharge(charge);
+                        jPeak2.setCharge(charge);
+                    }
+                    charge -= 1;
+                }
+                if ((jPeak1.getMz() - jPeak2.getMz()) > 2) {
+                    break;
+                }
+            }
+        }
+    }
+
+    private void initializeFragmentCharge() {
+        for (JPeak jPeak : getPeaks()) {
+            jPeak.setCharge(0);
+        }
+    }
+
+    /*remove peaks with 0.0 intensity (heavy isotopic peaks) and deconvolute higher charges*/
+    private void doIsotopicPeakReductionChargeDeconvolution(Boolean chargeDeconv) {
+        ArrayList<JPeak> filter = new ArrayList<JPeak>();
+        for (JPeak jPeak : getPeaks()) {
+            if (jPeak.getIntensity() > 0.0) {
+                if (chargeDeconv) {
+                    double mass = jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass();
+                    jPeak.setMz(mass);
+                }
+            } else {
+                filter.add(jPeak);
+            }
+        }
+        getPeaks().removeAll(filter);
+        sortPeaksByMZ();
+    }
+
+    private void doIonMarge(Boolean ionsMarge) {
 
     }
 
-
-
+    /*filter out ions with masses larger than precursor*/
+    private void doFilterIonsLargerThanPrecursor(Boolean filter) {
+        ArrayList<JPeak> filer = new ArrayList<JPeak>();
+        for (JPeak jPeak : getPeaks()) {
+            if (jPeak.getMz() > getParentMass()) {
+                filer.add(jPeak);
+            }
+        }
+        getPeaks().removeAll(filer);
+    }
 
 
 }
-
-
-
-/*
-*
-* to sort peaks in descending order of m/z
-* sortPeaksByIntensity(); Collections.reverse(getPeaks());
-* */
