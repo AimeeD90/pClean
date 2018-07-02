@@ -17,6 +17,9 @@ public class pCleanMainClass {
         options.addOption("itol", true, "Fragment tolerance");
         options.addOption("m", true, "mzIdentML file");
         options.addOption("label", true, "Peptide labeling method, iTRAQ4plex, iTRAQ8plex or TMT6, TMT12");
+        options.addOption("rep+", true, "True: remove reporter ions; False: keep reporter ions");
+        options.addOption("low", true, "True: removal of low b-/y-free window");
+        options.addOption("high", true, "True: removal of low b-/y-free window");
         options.addOption("h", false, "Help info");
 
         CommandLineParser parser = new DefaultParser();

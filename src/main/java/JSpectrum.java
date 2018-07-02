@@ -121,6 +121,14 @@ public class JSpectrum {
         this.peaks = peaks;
     }
 
+    public double getParentMass() {
+        return parentMass;
+    }
+
+    public void setParentMass(double parentMass) {
+        this.parentMass = parentMass;
+    }
+
     public ArrayList<JPeak> getPeaks() {
         if(this.peaks.size()==0){
             this.resetPeaks();
@@ -290,7 +298,7 @@ public class JSpectrum {
     * Module 1. removal of label-associated ions and of b-/y-ions free windows
     *
     * */
-    public void module1(String method, Boolean labelAssociated, Boolean byFreeWinLow, Boolean byFreeWinHigh) {
+    public void module1(String method, Boolean removeRep, Boolean labelAssociated, Boolean byFreeWinLow, Boolean byFreeWinHigh) {
         Double isobaric_tag;
         if (method.equals("iTRAQ4plex")) {
             isobaric_tag = 144.102063;
@@ -300,7 +308,7 @@ public class JSpectrum {
             itraq4Reporters.add(116.111069);
             itraq4Reporters.add(117.114424);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(itraq4Reporters, isobaric_tag);
+                filterLabelAssociatedIons(itraq4Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
                 filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
@@ -318,7 +326,7 @@ public class JSpectrum {
             itraq8Reporters.add(119.114814);
             itraq8Reporters.add(121.121523);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(itraq8Reporters, isobaric_tag);
+                filterLabelAssociatedIons(itraq8Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
                 filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
@@ -334,7 +342,7 @@ public class JSpectrum {
             tmt6Reporters.add(130.141145);
             tmt6Reporters.add(131.138180);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(tmt6Reporters, isobaric_tag);
+                filterLabelAssociatedIons(tmt6Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
                 filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
@@ -354,7 +362,7 @@ public class JSpectrum {
             tmt10Reporters.add(130.1411453);
             tmt10Reporters.add(131.1381802);
             if (!labelAssociated) {
-                filterLabelAssociatedIons(tmt10Reporters, isobaric_tag);
+                filterLabelAssociatedIons(tmt10Reporters, isobaric_tag, removeRep);
             }
             if (!byFreeWinLow || !byFreeWinHigh) {
                 filterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
@@ -395,22 +403,51 @@ public class JSpectrum {
         getPeaks().removeAll(uninformative);
     }
 
-    private void filterLabelAssociatedIons(ArrayList<Double> reporters, Double isobaric_tag) {
+    private void filterLabelAssociatedIons(ArrayList<Double> reporters, Double isobaric_tag, Boolean reporter) {
         ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
-        Double labelH = isobaric_tag + ElementaryIon.proton.getTheoreticMass();
+        Double h = ElementaryIon.proton.getTheoreticMass();
+        Double labelH = isobaric_tag + h;
+        Double labelH2 = isobaric_tag + h * 2;
+        Double o = 15.994915;
+        Double c = 12.0;
         Double precusorMinuslabel = getParentMass() - isobaric_tag;
+
         for (JPeak jPeak : getPeaks()) {
             Double mz = jPeak.getMz();
-            if (Config.deltaPPM(labelH, mz) <= 20) {
+            /*pClean is designed to preprocess high-resolution MS/MS data, so the */
+            /*label-associated ions: label+ */
+            if (Config.deltaPPM(labelH, mz) <= Config.ms2tol) {
                 uninformative.add(jPeak);
                 continue;
             }
-            if (Config.deltaPPM(precusorMinuslabel, mz) <= 20) {
+            /*label-associated ions: label++ */
+            if (Config.deltaPPM(labelH2, mz) <= Config.ms2tol) {
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*label-associated ions: precursor-label+ */
+            if (Config.deltaPPM(precusorMinuslabel, mz) <= Config.ms2tol) {
                 uninformative.add(jPeak);
                 continue;
             }
             for (Double mass : reporters) {
-                if (Config.deltaPPM(mass, mz) <= 20) {
+                /*remove reporter ions*/
+                if (reporter) {
+                    if (Config.deltaPPM(mass, mz) <= Config.ms2tol) {
+                        uninformative.add(jPeak);
+                        break;
+                    }
+                }
+
+                Double repCOH = mass + c + o + h;
+                Double precusorMinusRepCOH = getParentMass() - repCOH;
+                /*label-associated ions: repCO+ */
+                if (Config.deltaPPM(repCOH, mz) <= Config.ms2tol) {
+                    uninformative.add(jPeak);
+                    break;
+                }
+                /*label-associated ions: precursor-repCO+ */
+                if (Config.deltaPPM(precusorMinusRepCOH, mz) <= Config.ms2tol) {
                     uninformative.add(jPeak);
                     break;
                 }
@@ -420,14 +457,18 @@ public class JSpectrum {
     }
 
 
+    /*
+    * Module 2. Isotopic peak reduction & charge deconvolution
+    *
+    * */
+    public void module2(Boolean isoReduction, Boolean chargeDeconv) {
 
-    public double getParentMass() {
-        return parentMass;
+
     }
 
-    public void setParentMass(double parentMass) {
-        this.parentMass = parentMass;
-    }
+
+
+
 
 }
 
