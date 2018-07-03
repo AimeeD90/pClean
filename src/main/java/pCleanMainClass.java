@@ -13,7 +13,6 @@ import java.util.HashSet;
 
 /**
  *
- *
  * Created by dengyamei on 30/06/2018.
  */
 
@@ -24,16 +23,16 @@ public class pCleanMainClass {
         options.addOption("i", true, "MS/MS data in MGF format");
         options.addOption("o", true, "Output directory");
         options.addOption("itol", true, "Fragment tolerance");
-        options.addOption("mion", true, "True: remove immonium ions; False: undo");
+        options.addOption("mionFilter", false, "immonium ions filter");
         options.addOption("labelMethod", true, "Peptide labeling method, iTRAQ4plex, iTRAQ8plex or TMT6, TMT12");
-        options.addOption("repFilter", true, "True: remove reporter ions; False: undo");
-        options.addOption("labelFilter", true, "True: remove label-associated ions; False: undo");
-        options.addOption("low", true, "True: removal of low b-/y-free window; False: undo");
-        options.addOption("high", true, "True: removal of low b-/y-free window; False: undo");
-        options.addOption("isoReduction", true, "True: reduction of heavy isotopic peaks; False: undo");
-        options.addOption("chargeDeconv", true, "True: high charge deconvolution; False: undo");
-        options.addOption("ionsMarge", true, "True: marge two adjacent peaks within a mass tolerance of 20ppm; False: undo");
-        options.addOption("largerThanPrecursor", true, "True: remove peaks larger than precursor; False: undo");
+        options.addOption("repFilter", false, "remove reporter ions");
+        options.addOption("labelFilter", false, "remove label-associated ions");
+        options.addOption("low", false, "removal of low b-/y-free window");
+        options.addOption("high", false, "removal of low b-/y-free window");
+        options.addOption("isoReduction", false, "reduction of heavy isotopic peaks");
+        options.addOption("chargeDeconv", false, "high charge deconvolution");
+        options.addOption("ionsMarge", false, "marge two adjacent peaks within a mass tolerance of 20ppm");
+        options.addOption("largerThanPrecursor", false, "remove peaks larger than precursor");
         options.addOption("m", true, "mzIdentML file");
         options.addOption("h", false, "Help info");
 
@@ -63,13 +62,12 @@ public class pCleanMainClass {
 
         /*Default treatments for MS/MS spectra before applying a module*/
         JSpectrum.setImmoniumIons();
-        Boolean imon = cmd.hasOption("mion");
+        Boolean imonFilter = cmd.hasOption("mionFilter");
 
         String labelMethod = null;
-        if (cmd.hasOption("label")) {
+        if (cmd.hasOption("labelMethod")) {
             labelMethod = cmd.getOptionValue("labelMethod");
         }
-
         Boolean repFilter = cmd.hasOption("repFilter");
         Boolean labelFilter = cmd.hasOption("labelFilter");
         Boolean lowWinFilter = cmd.hasOption("low");
@@ -79,62 +77,29 @@ public class pCleanMainClass {
         Boolean ionsMarge = cmd.hasOption("ionsMarge");
         Boolean largerThanPrecursor = cmd.hasOption("largerThanPrecursor");
 
-
         String outlog = outdir+"/spectrumInfor.txt";
         if (cmd.hasOption("m")) {
             String mzID = cmd.getOptionValue("m");
 
         } else {
             if (labelMethod != null) {
-                doPreprocessing123(mgf, outdir, outlog, imon, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                //System.out.println(mgf + "\n" + outdir + "\n" + outlog + "\n" + imonFilter + "\n" + labelMethod + "\n" + repFilter + "\n" + labelFilter + "\n" + lowWinFilter + "\n" + highWinFilter + "\n" + isoReduction + "\n" + chargeDeconv + "\n" + ionsMarge + "\n" + largerThanPrecursor);
+                //doModul1Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter); /*finish test, pass*/
+
+
+
+                //doModule12Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                //doPreprocessing123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             } else {
-                doImoniumIonsFilter(mgf, outdir, outlog, imon);
-                //doModul1(mgf, outdir, outlog, imon, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, largerThanPrecursor);
-                //doPreprocessing23(mgf, outdir, outlog, imon, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                //doImoniumIonsFilterTest(mgf, outdir, outlog, imonFilter); /*finish test, pass*/
+                //doModule2Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+
+
+                //doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             }
         }
     }
 
-    private static void doImoniumIonsFilter(String mgf, String outdir, String outlog, Boolean imon) throws IOException, MzMLUnmarshallerException {
-        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
-        File mgfFile = new File(mgf);
-        spectrumFactory.addSpectra(mgfFile, null);
-
-        /*parsing MS/MS spectrum one by one*/
-        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
-        for (int k=0;k<tList.size();k++) {
-            String outprefix = "spectrum" + k;
-            /*peak annotation file*/
-            String peakfile = outdir + "/" + outprefix + "_peak.txt";
-            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
-            bWriter.write("name\ttype\tintensity\n");
-
-            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
-            /*construct a JSpectrum object*/
-            JSpectrum jSpectrum = new JSpectrum();
-            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
-            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
-            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
-            jSpectrum.setCharge(ch);
-            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
-            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
-            jSpectrum.setRt(spectrum.getPrecursor().getRt());
-            for (Peak p : spectrum.getPeakList()) {
-                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
-                jSpectrum.addRawPeak(jPeak);
-            }
-            jSpectrum.resetPeaks();
-            if (imon) {
-                int imonNumber = jSpectrum.removeImmoniumIons();
-                System.out.println(imonNumber + "\t" + spectrum.getSpectrumTitle());
-            }
-            jSpectrum.sortPeaksByMZ();
-        }
-    }
-
-    private static void doModul1(String mgf, String outdir, String outlog, Boolean imon, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean largerThanPrecursor) {
-
-    }
 
     /*For high-resolution label-based MS/MS data: implemented module 1, 2, and 3*/
     private static void doPreprocessing123(String mgf, String outdir, String outlog, Boolean imon, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
@@ -487,5 +452,126 @@ public class pCleanMainClass {
             }
         }
         return jPeakPairList;
+    }
+
+
+    private static void doImoniumIonsFilterTest(String mgf, String outdir, String outlog, Boolean imon) throws IOException, MzMLUnmarshallerException {
+        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
+        File mgfFile = new File(mgf);
+        spectrumFactory.addSpectra(mgfFile, null);
+
+        /*parsing MS/MS spectrum one by one*/
+        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
+        for (int k=0;k<tList.size();k++) {
+            String outprefix = "spectrum" + k;
+            /*peak annotation file*/
+            String peakfile = outdir + "/" + outprefix + "_peak.txt";
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
+            bWriter.write("name\ttype\tintensity\n");
+
+            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
+            /*construct a JSpectrum object*/
+            JSpectrum jSpectrum = new JSpectrum();
+            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
+            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
+            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
+            jSpectrum.setCharge(ch);
+            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
+            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
+            jSpectrum.setRt(spectrum.getPrecursor().getRt());
+            for (Peak p : spectrum.getPeakList()) {
+                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
+                jSpectrum.addRawPeak(jPeak);
+            }
+            jSpectrum.resetPeaks();
+            if (imon) {
+                int imonNumber = jSpectrum.removeImmoniumIons();
+                System.out.println(imonNumber + "\t" + spectrum.getSpectrumTitle());
+            }
+            jSpectrum.sortPeaksByMZ();
+            bWriter.close();
+        }
+    }
+
+    private static void doModul1Test(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter) throws IOException, MzMLUnmarshallerException {
+        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
+        File mgfFile = new File(mgf);
+        spectrumFactory.addSpectra(mgfFile, null);
+
+        /*parsing MS/MS spectrum one by one*/
+        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
+        for (int k=0;k<tList.size();k++) {
+            String outprefix = "spectrum" + k;
+            /*peak annotation file*/
+            String peakfile = outdir + "/" + outprefix + "_peak.txt";
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
+            bWriter.write("name\ttype\tintensity\n");
+
+            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
+            /*construct a JSpectrum object*/
+            JSpectrum jSpectrum = new JSpectrum();
+            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
+            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
+            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
+            jSpectrum.setCharge(ch);
+            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
+            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
+            jSpectrum.setRt(spectrum.getPrecursor().getRt());
+            for (Peak p : spectrum.getPeakList()) {
+                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
+                jSpectrum.addRawPeak(jPeak);
+            }
+            jSpectrum.resetPeaks();
+            if (imonFilter) {
+                int imons = jSpectrum.removeImmoniumIons();
+                //System.out.println(spectrum.getSpectrumTitle() + "\t" + "imons:" + imons);
+            }
+
+            /*module1 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            jSpectrum.module1(labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter);
+            bWriter.close();
+        }
+    }
+
+    private static void doModule2Test(String mgf, String outdir, String outlog, Boolean imonFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
+        File mgfFile = new File(mgf);
+        spectrumFactory.addSpectra(mgfFile, null);
+
+        /*parsing MS/MS spectrum one by one*/
+        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
+        for (int k=0;k<tList.size();k++) {
+            String outprefix = "spectrum" + k;
+            /*peak annotation file*/
+            String peakfile = outdir + "/" + outprefix + "_peak.txt";
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
+            bWriter.write("name\ttype\tintensity\n");
+
+            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
+            /*construct a JSpectrum object*/
+            JSpectrum jSpectrum = new JSpectrum();
+            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
+            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
+            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
+            jSpectrum.setCharge(ch);
+            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
+            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
+            jSpectrum.setRt(spectrum.getPrecursor().getRt());
+            for (Peak p : spectrum.getPeakList()) {
+                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
+                jSpectrum.addRawPeak(jPeak);
+            }
+            jSpectrum.resetPeaks();
+            if (imonFilter) {
+                jSpectrum.removeImmoniumIons();
+            }
+
+            /*moudle2 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+            //jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+            bWriter.close();
+        }
     }
 }
