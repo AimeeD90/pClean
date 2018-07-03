@@ -244,6 +244,7 @@ public class JSpectrum {
             }
             for (Double mion : ImmoniumIons.keySet()) {
                 if (Math.abs(jPeak.getMz() - mion) <= Config.ms2tol) {
+                    System.out.println("mion:" + mion + "\tpeak:" + jPeak.getMz());
                     rpn++;
                     pListIterator.remove();
                     break;
@@ -621,8 +622,35 @@ public class JSpectrum {
         sortPeaksByMZ();
     }
 
+    /*marge similar ions in a direct way*/
     private void doIonMarge(Boolean ionsMarge) {
+        ArrayList<JPeak> jPeaks = new ArrayList<JPeak>();
+        double previousMZ = getPeaks().get(0).getMz();
+        double previousIntensity = getPeaks().get(0).getIntensity();
+        for (int i = 0; i < getPeaks().size(); i++) {
+            double mz = getPeaks().get(i).getMz();
+            double intensity = getPeaks().get(i).getIntensity();
 
+            if (Math.abs(previousMZ - mz) < 0.01) {
+                double mzMarge = (mz + previousMZ) / 2;
+                double intensityMarge = (intensity + previousIntensity) / 2;
+                previousMZ = mzMarge;
+                previousIntensity = intensityMarge;
+            } else {
+                JPeak jPeak = new JPeak(previousMZ, previousIntensity);
+                jPeak.setID(Double.toString(previousMZ));
+                jPeaks.add(jPeak);
+                previousMZ = mz;
+                previousIntensity = intensity;
+
+                if (i == (getPeaks().size() - 1)) {
+                    JPeak jPeakLastOne = new JPeak(previousMZ, previousIntensity);
+                    jPeak.setID(Double.toString(previousMZ));
+                    jPeaks.add(jPeakLastOne);
+                }
+            }
+        }
+        setPeaks(jPeaks);
     }
 
     /*filter out ions with masses larger than precursor*/
@@ -636,5 +664,58 @@ public class JSpectrum {
         getPeaks().removeAll(filer);
     }
 
+
+    /*marge similar ions using charge information*/
+    /*private void doIonMarge(Boolean ionsMarge) {
+        ArrayList<JPeak> jPeaks = new ArrayList<JPeak>();
+        double previousMZ = getPeaks().get(0).getMz();
+        double previousIntensity = getPeaks().get(0).getIntensity();
+        int previousCharge = getPeaks().get(0).getCharge();
+        for (int i = 1; i < getPeaks().size(); i++) {
+            double mz = getPeaks().get(i).getMz();
+            double intensity = getPeaks().get(i).getIntensity();
+            int charge = getPeaks().get(i).getCharge();
+
+            if (Math.abs(previousMZ - mz) < 0.01) {
+                if (previousCharge > 0 && charge > 0) {
+                    double mzMarge = (mz + previousMZ) / 2;
+                    double intensityMarge = (intensity + previousIntensity);
+
+                    previousMZ = mzMarge;
+                    previousIntensity = intensityMarge;
+                    previousCharge = charge;
+                } else {
+                    //System.out.println("Pay Attention!");
+                    //System.out.println(previousMZ + "\t" + mz + "\t" + previousIntensity + "\t" + intensity + "\t" + previousCharge + "\t" + charge);
+                    *//*if two adjacent ions have similar mz and the charge of both of them is 0, they should be kept the original state.*//*
+                    if (previousCharge == 0 && charge == 0) {
+                        if (intensity > previousIntensity) {
+                            previousMZ = mz;
+                            previousIntensity = intensity;
+                            previousCharge = charge;
+                        }
+                    } else {
+                        double mzMarge = (mz + previousMZ) / 2;
+                        double intensityMarge = (intensity + previousIntensity);
+                        previousMZ = mzMarge;
+                        previousIntensity = intensityMarge;
+                        previousCharge = charge;
+                    }
+                }
+            } else {
+                JPeak jPeak = new JPeak(previousMZ, previousIntensity, previousCharge);
+                jPeaks.add(jPeak);
+                previousMZ = mz;
+                previousIntensity = intensity;
+                previousCharge = charge;
+
+                if (i == (getPeaks().size() - 1)) {
+                    JPeak jPeakLastOne = new JPeak(previousMZ, previousIntensity, previousCharge);
+                    jPeaks.add(jPeakLastOne);
+                }
+            }
+        }
+        setPeaks(jPeaks);
+    }*/
 
 }

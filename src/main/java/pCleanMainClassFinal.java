@@ -18,7 +18,7 @@ import java.util.HashSet;
  */
 
 
-public class pCleanMainClass {
+public class pCleanMainClassFinal {
     public static void main(String[] args) throws ParseException, IOException, MzMLUnmarshallerException {
         Options options = new Options();
         options.addOption("i", true, "MS/MS data in MGF format");
@@ -88,48 +88,14 @@ public class pCleanMainClass {
             if (labelMethod != null) {
                 doPreprocessing123(mgf, outdir, outlog, imon, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             } else {
-                doImoniumIonsFilter(mgf, outdir, outlog, imon);
+                //doImoniumIonsFilter(mgf, outdir, outlog, imon);
                 //doModul1(mgf, outdir, outlog, imon, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, largerThanPrecursor);
-                //doPreprocessing23(mgf, outdir, outlog, imon, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                doPreprocessing23(mgf, outdir, outlog, imon, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             }
         }
     }
 
-    private static void doImoniumIonsFilter(String mgf, String outdir, String outlog, Boolean imon) throws IOException, MzMLUnmarshallerException {
-        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
-        File mgfFile = new File(mgf);
-        spectrumFactory.addSpectra(mgfFile, null);
-
-        /*parsing MS/MS spectrum one by one*/
-        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
-        for (int k=0;k<tList.size();k++) {
-            String outprefix = "spectrum" + k;
-            /*peak annotation file*/
-            String peakfile = outdir + "/" + outprefix + "_peak.txt";
-            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
-            bWriter.write("name\ttype\tintensity\n");
-
-            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
-            /*construct a JSpectrum object*/
-            JSpectrum jSpectrum = new JSpectrum();
-            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
-            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
-            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
-            jSpectrum.setCharge(ch);
-            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
-            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
-            jSpectrum.setRt(spectrum.getPrecursor().getRt());
-            for (Peak p : spectrum.getPeakList()) {
-                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
-                jSpectrum.addRawPeak(jPeak);
-            }
-            jSpectrum.resetPeaks();
-            if (imon) {
-                int imonNumber = jSpectrum.removeImmoniumIons();
-                System.out.println(imonNumber + "\t" + spectrum.getSpectrumTitle());
-            }
-            jSpectrum.sortPeaksByMZ();
-        }
+    private static void doImoniumIonsFilter(String mgf, String outdir, String outlog, Boolean imon) {
     }
 
     private static void doModul1(String mgf, String outdir, String outlog, Boolean imon, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean largerThanPrecursor) {

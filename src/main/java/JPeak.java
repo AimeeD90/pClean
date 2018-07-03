@@ -96,6 +96,18 @@ public class JPeak implements Cloneable {
         this.intensity = jPeak.getIntensity();
     }
 
+    /*
+    * Main constructor:
+    * @param mz
+    * @param intensity
+    * @param charge
+    * */
+    public JPeak(double mz, double intensity, int charge) {
+        this.mz = mz;
+        this.intensity = intensity;
+        this.charge = charge;
+    }
+
 }
 
 /*
