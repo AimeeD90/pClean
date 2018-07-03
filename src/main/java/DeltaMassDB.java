@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 /**
+ * the mass gap database used in pClean
+ *
  * Created by dengyamei on 03/07/2018.
  */
 public class DeltaMassDB {
