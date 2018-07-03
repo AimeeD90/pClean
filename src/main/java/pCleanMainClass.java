@@ -1,9 +1,6 @@
-import com.compomics.util.experiment.biology.aminoacids.B;
-import com.compomics.util.experiment.biology.ions.ElementaryIon;
 import com.compomics.util.experiment.massspectrometry.MSnSpectrum;
 import com.compomics.util.experiment.massspectrometry.Peak;
 import com.compomics.util.experiment.massspectrometry.SpectrumFactory;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.commons.cli.*;
 import uk.ac.ebi.jmzml.xml.io.MzMLUnmarshallerException;
 
