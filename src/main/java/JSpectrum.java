@@ -157,7 +157,7 @@ public class JSpectrum {
     }
 
     /*reset peaks as rawPeaks*/
-    private void resetPeaks() {
+    public void resetPeaks() {
         this.peaks = new ArrayList<JPeak>();
         for (JPeak jPeak : this.rawPeaks) {
             JPeak tmpJPeak = jPeak.clone();
@@ -611,6 +611,7 @@ public class JSpectrum {
                 if (chargeDeconv) {
                     double mass = jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass();
                     jPeak.setMz(mass);
+                    jPeak.setCharge(1);
                 }
             } else {
                 filter.add(jPeak);
