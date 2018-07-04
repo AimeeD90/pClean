@@ -34,6 +34,7 @@ public class pCleanMainClass {
         options.addOption("chargeDeconv", false, "high charge deconvolution");
         options.addOption("ionsMarge", false, "marge two adjacent peaks within a mass tolerance of 20ppm");
         options.addOption("largerThanPrecursor", false, "remove peaks larger than precursor");
+        options.addOption("a2", false, "Consider gap masses of two amino acids");
         options.addOption("m", true, "mzIdentML file");
         options.addOption("h", false, "Help info");
 
@@ -77,6 +78,12 @@ public class pCleanMainClass {
         Boolean chargeDeconv = cmd.hasOption("chargeDeconv");
         Boolean ionsMarge = cmd.hasOption("ionsMarge");
         Boolean largerThanPrecursor = cmd.hasOption("largerThanPrecursor");
+
+        if (cmd.hasOption("a2")) {
+            DeltaMassDB.consider2aa = true;
+        } else {
+            DeltaMassDB.consider2aa = false;
+        }
 
         String outlog = outdir+"/spectrumInfor.txt";
         if (cmd.hasOption("m")) {
