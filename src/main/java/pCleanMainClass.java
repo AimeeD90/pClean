@@ -1,3 +1,4 @@
+import com.compomics.util.experiment.biology.ions.ElementaryIon;
 import com.compomics.util.experiment.massspectrometry.MSnSpectrum;
 import com.compomics.util.experiment.massspectrometry.Peak;
 import com.compomics.util.experiment.massspectrometry.SpectrumFactory;
@@ -85,24 +86,22 @@ public class pCleanMainClass {
             if (labelMethod != null) {
                 //System.out.println(mgf + "\n" + outdir + "\n" + outlog + "\n" + imonFilter + "\n" + labelMethod + "\n" + repFilter + "\n" + labelFilter + "\n" + lowWinFilter + "\n" + highWinFilter + "\n" + isoReduction + "\n" + chargeDeconv + "\n" + ionsMarge + "\n" + largerThanPrecursor);
                 //doModul1Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter); /*finish test, pass*/
+                //doModule123Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
 
-
-
-                //doModule12Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
-                //doPreprocessing123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                doPreprocessing123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             } else {
                 //doImoniumIonsFilterTest(mgf, outdir, outlog, imonFilter); /*finish test, pass*/
-                //doModule2Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                //doModule2Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
+                //doPreprocessing23Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
 
-
-                //doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             }
         }
     }
 
 
     /*For high-resolution label-based MS/MS data: implemented module 1, 2, and 3*/
-    private static void doPreprocessing123(String mgf, String outdir, String outlog, Boolean imon, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+    private static void doPreprocessing123(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
         SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
         File mgfFile = new File(mgf);
         spectrumFactory.addSpectra(mgfFile, null);
@@ -135,7 +134,7 @@ public class pCleanMainClass {
                 jSpectrum.addRawPeak(jPeak);
             }
             jSpectrum.resetPeaks();
-            if (imon) {
+            if (imonFilter) {
                 jSpectrum.removeImmoniumIons();
             }
 
@@ -169,10 +168,16 @@ public class pCleanMainClass {
             for(int i=0;i<jSpectrum.getPeaks().size();i++){
                 JPeak jPeak = jSpectrum.getPeaks().get(i);
                 jPeak.setID(String.valueOf(jPeak.getMz()));
-                //jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                /*
+                * if user did not set charge deconvolution, charge deconvolution will be temporarily transformed to charge 1,
+                * this is necessary for graph-based network filtration.
+                * */
+                if (!chargeDeconv) {
+                    jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                }
             }
 
-            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum,true,labelMethod);
+            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum, labelMethod);
             /*output edge.txt*/
             StringBuilder edgeStrBuilder = new StringBuilder();
             edgeStrBuilder.append("From\tTo\tmass1\tmass2\tcharge1\tcharge2\tmztol\tdelta\tdeltaName\tintensity\n");
@@ -257,10 +262,16 @@ public class pCleanMainClass {
             for(int i=0;i<jSpectrum.getPeaks().size();i++){
                 JPeak jPeak = jSpectrum.getPeaks().get(i);
                 jPeak.setID(String.valueOf(jPeak.getMz()));
-                //jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                /*
+                * if user did not set charge deconvolution, charge deconvolution will be temporarily transformed to charge 1,
+                * this is necessary for graph-based network filtration.
+                * */
+                if (!chargeDeconv) {
+                    jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                }
             }
 
-            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum, true, null);
+            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum, null);
             /*output edge.txt*/
             StringBuilder edgeStrBuilder = new StringBuilder();
             edgeStrBuilder.append("From\tTo\tmass1\tmass2\tcharge1\tcharge2\tmztol\tdelta\tdeltaName\tintensity\n");
@@ -281,7 +292,7 @@ public class pCleanMainClass {
         logWriter.close();
     }
 
-    private static ArrayList<JPeakPair> findPeakPair(JSpectrum jSpectrum, boolean b, String labelMethod) {
+    private static ArrayList<JPeakPair> findPeakPair(JSpectrum jSpectrum, String labelMethod) {
         ArrayList<JPeakPair> jPeakPairList = new ArrayList<JPeakPair>();
         DeltaMassDB deltaMassDB = new DeltaMassDB(labelMethod);
         deltaMassDB.init();
@@ -306,8 +317,9 @@ public class pCleanMainClass {
                     continue;
                 }
 
+                /*formula 1: Mass(bi)+Mass(yn-i) = Mass(protonated precursor)+1*/
                 double delta2parent = Math.abs((mz + mzNext - 2) - jSpectrum.getParentMass());
-                if (delta2parent <= 0.1) {
+                if (delta2parent <= 2 * Config.ms2tol) {
                     double sumInt = jPeak.getIntensity() + jSpectrum.getPeaks().get(j).getIntensity();
                     /*make sure the peak-peak-match is unique*/
                     if (Double.valueOf(pID) >= Double.valueOf(pID2)) {
@@ -338,19 +350,23 @@ public class pCleanMainClass {
 
                     usedPeak.add(pID);
                 } else {
+                    /*
+                    * formula 2: |Mass(bi or yi) - Mass(bi-1 or yi-1)| ∈ S{AMnative, AMvariant}
+                    * formula 4: |Mass(bi or yi) - Mass(bi-1 or yi-1)| ∈ S{AAMnative, AAMvariant}
+                    * */
                     ArrayList<PMass> matchPMass = deltaMassDB.searchDB(Math.abs(mz - mzNext), Config.ms2tol, 2);
                     if (matchPMass.size() == 1) {
                         double sumInt = jPeak.getIntensity() + jSpectrum.getPeaks().get(j).getIntensity();
                         if (Double.valueOf(pID) >= Double.valueOf(pID2)) {
                             if (!findPairs.contains(pID2 + ";" + pID)) {
                                 findPairs.add(pID2 + ";" + pID);
-                            }else {
+                            } else {
                                 continue;
                             }
-                        }else {
+                        } else {
                             if (!findPairs.contains(pID + ";" + pID2)) {
                                 findPairs.add(pID + ";" + pID2);
-                            }else {
+                            } else {
                                 continue;
                             }
                         }
@@ -386,7 +402,7 @@ public class pCleanMainClass {
 
                         /*
                         * check out the returned matchPMass by searchDB when searching deltaMassDB library is corresponding to an amino acid's mass,
-                        * other than the sum mass of aa.
+                        * or the sum mass of aa.
                         * The edge with an amino-acid relationship is preferable.
                         * */
                         double deltaTmp = matchPMass.get(0).deltaMZ;
@@ -414,7 +430,13 @@ public class pCleanMainClass {
 
                         usedPeak.add(pID);
                     } else {
-                        /*if none matchPMass is returned, check out amino acid mass complementation relationships*/
+                        /*
+                        * if none matchPMass is returned, check out amino acid mass complementation relationships
+                        *
+                        * formula 3: |Mass(protonated precursor) - (Mass(bi or yi) - Mass(yn-i-1 or bn-i-1))| ∈ S{AMnative, AMvariant}
+                        * formula 5: |Mass(protonated precursor) - (Mass(bi or yi) - Mass(yn-i-1 or bn-i-1))| ∈ S{AAMnative, AAMvariant}
+                        *
+                        * */
                         ArrayList<PMass> matchPMass2 = deltaMassDB.searchDB(delta2parent, Config.ms2tol, 2);
                         if (!matchPMass2.isEmpty() && matchPMass2.size() >= 1) {
                             double sumInt = jPeak.getIntensity() + jSpectrum.getPeaks().get(j).getIntensity();
@@ -573,5 +595,195 @@ public class pCleanMainClass {
             //jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
             bWriter.close();
         }
+    }
+
+    private static void doPreprocessing23Test(String mgf, String outdir, String outlog, Boolean imonFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
+        File mgfFile = new File(mgf);
+        spectrumFactory.addSpectra(mgfFile, null);
+
+        /*spectrumInfor.txt*/
+        StringBuilder logStrBuilder = new StringBuilder();
+        logStrBuilder.append("index\tedge\tvertex\tmz\tintensity\tcharge\n");
+
+        /*parsing MS/MS spectrum one by one*/
+        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
+        for (int k=0;k<tList.size();k++) {
+            String outprefix = "spectrum" + k;
+            /*peak annotation file*/
+            String peakfile = outdir + "/" + outprefix + "_peak.txt";
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
+            bWriter.write("name\ttype\tintensity\n");
+
+            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
+            /*construct a JSpectrum object*/
+            JSpectrum jSpectrum = new JSpectrum();
+            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
+            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
+            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
+            jSpectrum.setCharge(ch);
+            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
+            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
+            jSpectrum.setRt(spectrum.getPrecursor().getRt());
+            for (Peak p : spectrum.getPeakList()) {
+                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
+                jSpectrum.addRawPeak(jPeak);
+            }
+            jSpectrum.resetPeaks();
+            if (imonFilter) {
+                jSpectrum.removeImmoniumIons();
+            }
+
+            /*moudle2 treatment*/
+            jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+
+            /*module3 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            StringBuilder peakBuilder = new StringBuilder();
+            for (int i = 0; i < jSpectrum.getPeaks().size(); i++) {
+                JPeak jPeak = jSpectrum.getPeaks().get(i);
+                peakBuilder.append(jPeak.getMz());
+                peakBuilder.append("\tNA\t");
+                peakBuilder.append(jPeak.getIntensity());
+                peakBuilder.append("\n");
+            }
+            bWriter.write(peakBuilder.toString() + "\n");
+            bWriter.close();
+
+            /*individual and original MS/MS spectrum*/
+            String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
+            BufferedWriter msWriter1 = new BufferedWriter(new FileWriter(new File(outMS1)));
+            msWriter1.write(spectrum.asMgf() + "\n");
+            msWriter1.close();
+
+            for(int i=0;i<jSpectrum.getPeaks().size();i++){
+                JPeak jPeak = jSpectrum.getPeaks().get(i);
+                jPeak.setID(String.valueOf(jPeak.getMz()));
+                /*
+                * if user did not set charge deconvolution, charge deconvolution will be temporarily transformed to charge 1,
+                * this is necessary for graph-based network filtration.
+                * */
+                if (!chargeDeconv) {
+                    jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                }
+            }
+
+            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum, null);
+            /*output edge.txt*/
+            StringBuilder edgeStrBuilder = new StringBuilder();
+            edgeStrBuilder.append("From\tTo\tmass1\tmass2\tcharge1\tcharge2\tmztol\tdelta\tdeltaName\tintensity\n");
+            for(JPeakPair jpp:jPeakPairs){
+                edgeStrBuilder.append(jpp.print());
+                edgeStrBuilder.append("\n");
+            }
+            String edgefile = outdir + "/" + outprefix + "_edge.txt";
+            BufferedWriter edgeWriter = new BufferedWriter(new FileWriter(new File(edgefile)));
+            edgeWriter.write(edgeStrBuilder.toString());
+            edgeWriter.close();
+
+            /*for spectrumInfor.txt*/
+            logStrBuilder.append(outprefix + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
+        }
+        BufferedWriter logWriter = new BufferedWriter(new FileWriter(new File(outlog)));
+        logWriter.write(logStrBuilder.toString());
+        logWriter.close();
+    }
+
+    private static void doModule123Test(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+        SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
+        File mgfFile = new File(mgf);
+        spectrumFactory.addSpectra(mgfFile, null);
+
+        /*spectrumInfor.txt*/
+        StringBuilder logStrBuilder = new StringBuilder();
+        logStrBuilder.append("index\tedge\tvertex\tmz\tintensity\tcharge\n");
+
+        /*parsing MS/MS spectrum one by one*/
+        ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
+        for (int k=0;k<tList.size();k++) {
+            String outprefix = "spectrum" + k;
+            /*peak annotation file*/
+            String peakfile = outdir + "/" + outprefix + "_peak.txt";
+            BufferedWriter bWriter = new BufferedWriter(new FileWriter(new File(peakfile)));
+            bWriter.write("name\ttype\tintensity\n");
+
+            MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
+            /*construct a JSpectrum object*/
+            JSpectrum jSpectrum = new JSpectrum();
+            Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
+            jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
+            jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());
+            jSpectrum.setCharge(ch);
+            jSpectrum.setSpectrumTitle(spectrum.getSpectrumTitle());
+            jSpectrum.setIntensity(spectrum.getPrecursor().getIntensity());
+            jSpectrum.setRt(spectrum.getPrecursor().getRt());
+            for (Peak p : spectrum.getPeakList()) {
+                JPeak jPeak = new JPeak(p.getMz(), p.getIntensity());
+                jSpectrum.addRawPeak(jPeak);
+            }
+            jSpectrum.resetPeaks();
+            if (imonFilter) {
+                jSpectrum.removeImmoniumIons();
+            }
+
+            /*module1 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            jSpectrum.module1(labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter);
+
+            /*moudle2 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+
+            /*module3 treatment*/
+            jSpectrum.sortPeaksByMZ();
+            StringBuilder peakBuilder = new StringBuilder();
+            for (int i = 0; i < jSpectrum.getPeaks().size(); i++) {
+                JPeak jPeak = jSpectrum.getPeaks().get(i);
+                peakBuilder.append(jPeak.getMz());
+                peakBuilder.append("\tNA\t");
+                peakBuilder.append(jPeak.getIntensity());
+                peakBuilder.append("\n");
+            }
+            bWriter.write(peakBuilder.toString() + "\n");
+            bWriter.close();
+
+            /*individual and original MS/MS spectrum*/
+            String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
+            BufferedWriter msWriter1 = new BufferedWriter(new FileWriter(new File(outMS1)));
+            msWriter1.write(spectrum.asMgf() + "\n");
+            msWriter1.close();
+
+            for(int i=0;i<jSpectrum.getPeaks().size();i++){
+                JPeak jPeak = jSpectrum.getPeaks().get(i);
+                jPeak.setID(String.valueOf(jPeak.getMz()));
+                /*
+                * if user did not set charge deconvolution, charge deconvolution will be temporarily transformed to charge 1,
+                * this is necessary for graph-based network filtration.
+                * */
+                if (!chargeDeconv) {
+                    jPeak.setMz(jPeak.getMz() * jPeak.getCharge() - (jPeak.getCharge() - 1) * ElementaryIon.proton.getTheoreticMass());
+                }
+            }
+
+            ArrayList<JPeakPair> jPeakPairs = findPeakPair(jSpectrum, labelMethod);
+            /*output edge.txt*/
+            StringBuilder edgeStrBuilder = new StringBuilder();
+            edgeStrBuilder.append("From\tTo\tmass1\tmass2\tcharge1\tcharge2\tmztol\tdelta\tdeltaName\tintensity\n");
+            for(JPeakPair jpp:jPeakPairs){
+                edgeStrBuilder.append(jpp.print());
+                edgeStrBuilder.append("\n");
+            }
+            String edgefile = outdir + "/" + outprefix + "_edge.txt";
+            BufferedWriter edgeWriter = new BufferedWriter(new FileWriter(new File(edgefile)));
+            edgeWriter.write(edgeStrBuilder.toString());
+            edgeWriter.close();
+
+            /*for spectrumInfor.txt*/
+            logStrBuilder.append(outprefix + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
+        }
+        BufferedWriter logWriter = new BufferedWriter(new FileWriter(new File(outlog)));
+        logWriter.write(logStrBuilder.toString());
+        logWriter.close();
+
     }
 }

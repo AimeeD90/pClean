@@ -362,7 +362,7 @@ public class JSpectrum {
                 doFilterLabelAssociatedIons(itraq8Reporters, isobaric_tag, removeRep);
             }
             if (byFreeWinLow || byFreeWinHigh) {
-                System.out.println(byFreeWinHigh + "-high\tlow-" + byFreeWinLow);
+                //System.out.println(byFreeWinHigh + "-high\tlow-" + byFreeWinLow);
                 doFilterBYfreeWins(byFreeWinLow, byFreeWinHigh, isobaric_tag);
             }
 
