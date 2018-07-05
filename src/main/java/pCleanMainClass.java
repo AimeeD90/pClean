@@ -115,7 +115,7 @@ public class pCleanMainClass {
 
         /*spectrumInfor.txt*/
         StringBuilder logStrBuilder = new StringBuilder();
-        logStrBuilder.append("index\tedge\tvertex\tmz\tintensity\tcharge\n");
+        logStrBuilder.append("index\ttitle\tedge\tvertex\tmz\tintensity\tcharge\n");
 
         /*parsing MS/MS spectrum one by one*/
         ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
@@ -198,7 +198,7 @@ public class pCleanMainClass {
             edgeWriter.close();
 
             /*for spectrumInfor.txt*/
-            logStrBuilder.append(outprefix + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
+            logStrBuilder.append(outprefix + "\t" + spectrum.getSpectrumTitle() + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
         }
         BufferedWriter logWriter = new BufferedWriter(new FileWriter(new File(outlog)));
         logWriter.write(logStrBuilder.toString());
@@ -213,7 +213,7 @@ public class pCleanMainClass {
 
         /*spectrumInfor.txt*/
         StringBuilder logStrBuilder = new StringBuilder();
-        logStrBuilder.append("index\tedge\tvertex\tmz\tintensity\tcharge\n");
+        logStrBuilder.append("index\ttitle\tedge\tvertex\tmz\tintensity\tcharge\n");
 
         /*parsing MS/MS spectrum one by one*/
         ArrayList<String> tList = spectrumFactory.getSpectrumTitles(mgfFile.getName());
@@ -292,7 +292,7 @@ public class pCleanMainClass {
             edgeWriter.close();
 
             /*for spectrumInfor.txt*/
-            logStrBuilder.append(outprefix + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
+            logStrBuilder.append(outprefix + "\t" + spectrum.getSpectrumTitle() + "\t" + edgefile + "\t" + peakfile + "\t" + spectrum.getPrecursor().getMz() + "\t" + spectrum.getPrecursor().getIntensity() + "\t" + ch + "\n");
         }
         BufferedWriter logWriter = new BufferedWriter(new FileWriter(new File(outlog)));
         logWriter.write(logStrBuilder.toString());
