@@ -167,10 +167,10 @@ public class pCleanMainClass {
             bWriter.close();
 
             /*individual and original MS/MS spectrum*/
-            String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
+            /*String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
             BufferedWriter msWriter1 = new BufferedWriter(new FileWriter(new File(outMS1)));
             msWriter1.write(spectrum.asMgf() + "\n");
-            msWriter1.close();
+            msWriter1.close();*/
 
             for(int i=0;i<jSpectrum.getPeaks().size();i++){
                 JPeak jPeak = jSpectrum.getPeaks().get(i);
@@ -261,10 +261,10 @@ public class pCleanMainClass {
             bWriter.close();
 
             /*individual and original MS/MS spectrum*/
-            String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
+            /*String outMS1 = outdir + "/" + outprefix + "_ms2-raw.mgf";
             BufferedWriter msWriter1 = new BufferedWriter(new FileWriter(new File(outMS1)));
             msWriter1.write(spectrum.asMgf() + "\n");
-            msWriter1.close();
+            msWriter1.close();*/
 
             for(int i=0;i<jSpectrum.getPeaks().size();i++){
                 JPeak jPeak = jSpectrum.getPeaks().get(i);
