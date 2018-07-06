@@ -508,7 +508,7 @@ public class JSpectrum {
     * Module 2. Isotopic peak reduction & charge deconvolution
     *
     * */
-    public void module2(Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean filter) {
+    public void module2(Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMerge, Boolean filter) {
         if (isoReduction) {
             /*for (JPeak jPeak : getPeaks()) {
                 System.out.println("before\t" + jPeak.getMz() + "\t" + jPeak.getCharge() + "\t" + jPeak.getIntensity());
@@ -524,7 +524,9 @@ public class JSpectrum {
 
             doIsotopicPeakReductionChargeDeconvolution(chargeDeconv);
 
-            doIonMarge(ionsMarge);
+            if (ionsMerge) {
+                doIonMerge();
+            }
 
             doFilterIonsLargerThanPrecursor(filter);
         } else {
@@ -543,7 +545,9 @@ public class JSpectrum {
             System.out.println("after:" + getPeaks().size());*/
 
             doIsotopicPeakReductionChargeDeconvolution(chargeDeconv);
-            doIonMarge(ionsMarge);
+            if (ionsMerge) {
+                doIonMerge();
+            }
             doFilterIonsLargerThanPrecursor(filter);
         }
     }
@@ -676,8 +680,8 @@ public class JSpectrum {
         sortPeaksByMZ();
     }
 
-    /*marge similar ions in a direct way*/
-    private void doIonMarge(Boolean ionsMarge) {
+    /*merge similar ions in a direct way*/
+    private void doIonMerge() {
         ArrayList<JPeak> jPeaks = new ArrayList<JPeak>();
         double previousMZ = getPeaks().get(0).getMz();
         double previousIntensity = getPeaks().get(0).getIntensity();
@@ -687,10 +691,10 @@ public class JSpectrum {
 
             if (Math.abs(previousMZ - mz) <= 0.05) { /*0.01 or 0.02 or 0.05???*/
                 //System.out.println("pre-" + previousMZ + "\taft-" + mz);
-                double mzMarge = (mz + previousMZ) / 2;
-                double intensityMarge = (intensity + previousIntensity) / 2;
-                previousMZ = mzMarge;
-                previousIntensity = intensityMarge;
+                double mzMerge = (mz + previousMZ) / 2;
+                double intensityMerge = (intensity + previousIntensity) / 2;
+                previousMZ = mzMerge;
+                previousIntensity = intensityMerge;
             } else {
                 JPeak jPeak = new JPeak(previousMZ, previousIntensity);
                 jPeaks.add(jPeak);

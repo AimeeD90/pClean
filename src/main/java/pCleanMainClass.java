@@ -32,7 +32,7 @@ public class pCleanMainClass {
         options.addOption("high", false, "removal of low b-/y-free window");
         options.addOption("isoReduction", false, "reduction of heavy isotopic peaks");
         options.addOption("chargeDeconv", false, "high charge deconvolution");
-        options.addOption("ionsMarge", false, "marge two adjacent peaks within a mass tolerance of 20ppm");
+        options.addOption("ionsMerge", false, "merge two adjacent peaks within a mass tolerance of 20ppm");
         options.addOption("largerThanPrecursor", false, "remove peaks larger than precursor");
         options.addOption("a2", false, "Consider gap masses of two amino acids");
         options.addOption("m", true, "mzIdentML file");
@@ -76,7 +76,7 @@ public class pCleanMainClass {
         Boolean highWinFilter = cmd.hasOption("high");
         Boolean isoReduction = cmd.hasOption("isoReduction");
         Boolean chargeDeconv = cmd.hasOption("chargeDeconv");
-        Boolean ionsMarge = cmd.hasOption("ionsMarge");
+        Boolean ionsMerge = cmd.hasOption("ionsMerge");
         Boolean largerThanPrecursor = cmd.hasOption("largerThanPrecursor");
 
         if (cmd.hasOption("a2")) {
@@ -95,20 +95,20 @@ public class pCleanMainClass {
                 //doModul1Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter); /*finish test, pass*/
                 //doModule123Test(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
 
-                doPreprocessing123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                doPreprocessing123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor);
             } else {
                 //doImoniumIonsFilterTest(mgf, outdir, outlog, imonFilter); /*finish test, pass*/
                 //doModule2Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
                 //doPreprocessing23Test(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor); /*finish test, pass*/
 
-                doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+                doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor);
             }
         }
     }
 
 
     /*For high-resolution label-based MS/MS data: implemented module 1, 2, and 3*/
-    private static void doPreprocessing123(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+    private static void doPreprocessing123(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMerge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
         SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
         File mgfFile = new File(mgf);
         spectrumFactory.addSpectra(mgfFile, null);
@@ -151,7 +151,7 @@ public class pCleanMainClass {
 
             /*moudle2 treatment*/
             jSpectrum.sortPeaksByMZ();
-            jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+            jSpectrum.module2(isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor);
 
             /*module3 treatment*/
             jSpectrum.sortPeaksByMZ();
@@ -206,7 +206,7 @@ public class pCleanMainClass {
     }
 
     /*For high-resolution label-free MS/MS data: implemented module 2 and 3*/
-    private static void doPreprocessing23(String mgf, String outdir, String outlog, Boolean imon, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMarge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
+    private static void doPreprocessing23(String mgf, String outdir, String outlog, Boolean imon, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMerge, Boolean largerThanPrecursor) throws IOException, MzMLUnmarshallerException {
         SpectrumFactory spectrumFactory = SpectrumFactory.getInstance();
         File mgfFile = new File(mgf);
         spectrumFactory.addSpectra(mgfFile, null);
@@ -245,7 +245,7 @@ public class pCleanMainClass {
 
             /*moudle2 treatment*/
             jSpectrum.sortPeaksByMZ();
-            jSpectrum.module2(isoReduction, chargeDeconv, ionsMarge, largerThanPrecursor);
+            jSpectrum.module2(isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor);
 
             /*module3 treatment*/
             jSpectrum.sortPeaksByMZ();
