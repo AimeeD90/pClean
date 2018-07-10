@@ -40,6 +40,13 @@
         </dependency>
 
         <dependency>
+            <groupId>com.compomics</groupId>
+            <artifactId>mascotdatfile</artifactId>
+            <version>3.6.0</version>
+        </dependency>
+
+
+        <dependency>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-resources-plugin</artifactId>
             <version>2.4.3</version>
@@ -75,7 +82,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>pCleanMainClass</mainClass>
+                            <mainClass>Preprocessing.pCleanMainClass</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
@@ -106,7 +113,7 @@
                         <manifest>
                             <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
                             <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <mainClass>pCleanMainClass</mainClass>
+                            <mainClass>Preprocessing.pCleanMainClass</mainClass>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib</classpathPrefix>
                         </manifest>

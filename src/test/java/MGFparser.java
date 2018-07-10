@@ -1,4 +1,5 @@
-import com.compomics.util.experiment.massspectrometry.Charge;
+import Preprocessing.JPeak;
+import Preprocessing.JSpectrum;
 import com.compomics.util.experiment.massspectrometry.MSnSpectrum;
 import com.compomics.util.experiment.massspectrometry.Peak;
 import com.compomics.util.experiment.massspectrometry.SpectrumFactory;
@@ -22,7 +23,7 @@ public class MGFparser {
             String outprefix = "spectrum" + k;
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
             JSpectrum jSpectrum = new JSpectrum();
-            /*set values for a JSpectrum object*/
+            /*set values for a Preprocessing.JSpectrum object*/
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
             jSpectrum.setParentMassToCharge(spectrum.getPrecursor().getMz());

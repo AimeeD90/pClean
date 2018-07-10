@@ -1,3 +1,4 @@
+import Preprocessing.*;
 import com.compomics.util.experiment.biology.ions.ElementaryIon;
 import com.compomics.util.experiment.massspectrometry.MSnSpectrum;
 import com.compomics.util.experiment.massspectrometry.Peak;
@@ -120,7 +121,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -218,7 +219,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -492,7 +493,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -530,7 +531,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -571,7 +572,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(), tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -616,7 +617,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));
@@ -708,7 +709,7 @@ public class pCleanMainClassTest {
             bWriter.write("name\ttype\tintensity\n");
 
             MSnSpectrum spectrum = (MSnSpectrum) spectrumFactory.getSpectrum(mgfFile.getName(),tList.get(k));
-            /*construct a JSpectrum object*/
+            /*construct a Preprocessing.JSpectrum object*/
             JSpectrum jSpectrum = new JSpectrum();
             Integer ch = spectrum.getPrecursor().getPossibleCharges().get(0).value;
             jSpectrum.setParentMass(spectrum.getPrecursor().getMassPlusProton(ch));

@@ -24,5 +24,5 @@ Class-Path: lib/commons-cli-1.4.jar lib/hppc-0.3.3.jar lib/jsparklines
  .org.apache.commons.logging-1.1.1.jar lib/xz-1.4.jar lib/slf4j-log4j1
  2-1.6.1.jar lib/commons-discovery-0.2.jar lib/isorelax-20050913.jar l
  ib/cpdetector-1.0.7.jar lib/commons-net-2.2.jar
-Main-Class: pCleanMainClass
+Main-Class: Preprocessing.pCleanMainClass
 
