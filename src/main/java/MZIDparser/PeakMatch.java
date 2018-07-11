@@ -53,7 +53,6 @@ public class PeakMatch {
     //fragmentation pattern
     public String fragmentMethod = "cid"; //default CID
     public int maxFragmentChargeState = 3;
-    //private AnnotationPreferences annotationPreferences = new AnnotationPreferences();
     private boolean lossWaterNH3=false;
 
     public PeakMatch(){
@@ -90,7 +89,6 @@ public class PeakMatch {
         while(pListIterator.hasNext()){
             JPeak jPeak = pListIterator.next();
             if( jPeak.getMz() <= this.dLowestMass){
-                //System.out.println("remove low mass peak:"+jPeak.getMz());
                 rpn++;
                 pListIterator.remove();
             }
@@ -109,7 +107,6 @@ public class PeakMatch {
         if(peaksNumber>this.iMaxPeaks){
             this.jSpectrum.sortPeaksByIntensity();
             this.jSpectrum.getPeaks().subList(0, peaksNumber-this.iMaxPeaks).clear();
-            //System.out.println("remove none top 50 peak!");
             isRemove=true;
         }
         return isRemove;
@@ -125,7 +122,6 @@ public class PeakMatch {
         if(peaksNumber>maxPeakCount){
             this.jSpectrum.sortPeaksByIntensity();
             this.jSpectrum.getPeaks().subList(0, peaksNumber-maxPeakCount).clear();
-            //System.out.println("remove none top maxPeakCount peak!");
             isRemove=true;
         }
         return isRemove;
@@ -139,14 +135,11 @@ public class PeakMatch {
         int rpn = 0;
         double maxIntensity = this.jSpectrum.getMaxIntensityFragmentIonPeak().getIntensity();
         double limitIntensity = 1.0*this.intensityLimit*maxIntensity;
-        //System.out.println("limitIntensity:"+limitIntensity);
 
         Iterator<JPeak> pListIterator = this.jSpectrum.getPeaks().iterator();
         while(pListIterator.hasNext()){
             JPeak jPeak = pListIterator.next();
             if( jPeak.getIntensity()<limitIntensity){
-                //System.out.println("remove peak:"+jPeak.getMz()+"\t"+jPeak.getIntensity());
-                //System.out.println("remove low intensity peak:"+jPeak.getMz());
                 rpn++;
                 pListIterator.remove();
             }
@@ -165,7 +158,6 @@ public class PeakMatch {
         int rpn = 0;
         double maxIntensity = this.jSpectrum.getMaxIntensityFragmentIonPeak().getIntensity();
         double limitIntensity = 1.0*interLimit*maxIntensity;
-        //System.out.println("limitIntensity:"+limitIntensity);
 
         Iterator<JPeak> pListIterator = this.jSpectrum.getPeaks().iterator();
         while(pListIterator.hasNext()){
@@ -187,7 +179,7 @@ public class PeakMatch {
     public int removeIsotopes(){
         int rpn = 0;
         if(this.jSpectrum.getPeaks().size()>2){
-            this.getJSpectrum().sortPeaksByMZ();// 必须先把峰按mz从小到大排序
+            this.getJSpectrum().sortPeaksByMZ();
             JPeak jPeak1 = this.getJSpectrum().getPeaks().get(0);
             JPeak jPeak2 = this.getJSpectrum().getPeaks().get(1);
             ArrayList< JPeak> tmpJPeaks = new ArrayList<JPeak>();
@@ -200,7 +192,7 @@ public class PeakMatch {
                     mz1 = jPeak1.getMz();
                 }else if (jPeak2.getIntensity() > jPeak1.getIntensity()){
                     jPeak1 = jPeak2;
-                    mz1 = jPeak1.getMz();//注意tandem的代码里是没有这个的
+                    mz1 = jPeak1.getMz();
                 }
             }
             rpn = this.jSpectrum.getPeaks().size() - tmpJPeaks.size();
@@ -218,7 +210,7 @@ public class PeakMatch {
     public int cleanIsotopes(){
         int rpn = 0;
         if(this.jSpectrum.getPeaks().size()>2){
-            this.getJSpectrum().sortPeaksByMZ();// 必须先把峰按mz从小到大排序
+            this.getJSpectrum().sortPeaksByMZ();
             JPeak jPeak1 = this.getJSpectrum().getPeaks().get(0);
             JPeak jPeak2 = this.getJSpectrum().getPeaks().get(1);
             ArrayList< JPeak> tmpJPeaks = new ArrayList<JPeak>();
@@ -231,7 +223,7 @@ public class PeakMatch {
                     mz1 = jPeak1.getMz();
                 }else if (jPeak2.getIntensity() > jPeak1.getIntensity()){
                     jPeak1 = jPeak2;
-                    mz1 = jPeak1.getMz();//注意tandem的代码里是没有这个的
+                    mz1 = jPeak1.getMz();
                 }
             }
             rpn = this.jSpectrum.getPeaks().size() - tmpJPeaks.size();
@@ -422,7 +414,6 @@ public class PeakMatch {
         while(pListIterator.hasNext()){
             JPeak jPeak = pListIterator.next();
             if( jPeak.getMz() > cutoff){
-                //System.out.println("remove low mass peak:"+jPeak.getMz());
                 rpn++;
                 pListIterator.remove();
             }
@@ -443,7 +434,6 @@ public class PeakMatch {
         while(pListIterator.hasNext()){
             JPeak jPeak = pListIterator.next();
             if( jPeak.getMz() > precursor_mz - cutoff && jPeak.getMz() < precursor_mz + cutoff){
-                //System.out.println("remove low mass peak:"+jPeak.getMz());
                 rpn++;
                 pListIterator.remove();
             }
@@ -473,13 +463,6 @@ public class PeakMatch {
         */
         ArrayList<ModificationMatch> mm = objPeptide.getModificationMatches();
         PTMFactory ptmFactory = PTMFactory.getInstance();
-        for (int m = 0; m < mm.size(); m++) {
-            /*System.out.println();
-            System.out.println(mm.get(m).getModificationSite() + "," + mm.get(m).getTheoreticPtm());
-            System.out.println(ptmFactory.getPTM(mm.get(m).getTheoreticPtm()).getMass());
-            System.out.println(ptmFactory.getPTM(mm.get(m).getTheoreticPtm()).getName());
-            System.out.println(ptmFactory.getPTM(mm.get(m).getTheoreticPtm()).getType());*/
-        }
 
 
         PeptideSpectrumAnnotator peptideSpectrumAnnotator = new PeptideSpectrumAnnotator();
@@ -517,24 +500,12 @@ public class PeakMatch {
         annotationSettings.setIntensityLimit(intensityLimit);
         ArrayList<IonMatch> matches = peptideSpectrumAnnotator.getSpectrumAnnotation(annotationSettings, specificAnnotationPreferences, spectrum, objPeptide);
 
-
-        //System.out.println(matches.size()+"fffff");
-        //System.out.println(ms2tol);
-        if (matches.isEmpty()) {
+        /*if (matches.isEmpty()) {
             System.err.println("No ions matched!");
-        }
+        }*/
         this.matches = matches;
 
     }
-
-	/*
-    public Peptide getObjPeptide(){
-		if(this.objPeptide==null){
-			this.objPeptide = new Peptide( jpsm.getPepSeq(),jpsm.getModificationMatch());
-		}
-		return this.objPeptide;
-	}
-	*/
 
     public boolean isLossWaterNH3() {
         return lossWaterNH3;

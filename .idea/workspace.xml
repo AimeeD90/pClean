@@ -7,18 +7,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="80282c6d-0f27-4762-8b32-a1e3d63b78a6" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/CalcFeature.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/JModification.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/JPSM.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/PAminoAcid.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/ReadmzID.java" />
-      <change type="MOVED" beforePath="$PROJECT_DIR$/src/main/java/DatParser/dPSM.java" afterPath="$PROJECT_DIR$/src/main/java/DatParser/SpectrumAnnotationContainer.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/DatParser/MascotDatparser.java" afterPath="$PROJECT_DIR$/src/main/java/DatParser/MascotDatparser.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java" afterPath="$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Preprocessing/JSpectrum.java" afterPath="$PROJECT_DIR$/src/main/java/Preprocessing/JSpectrum.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java" afterPath="$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/out/artifacts/pClean_jar/pClean.jar" afterPath="$PROJECT_DIR$/out/artifacts/pClean_jar/pClean.jar" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java" afterPath="$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,274 +24,16 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="pom.xml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/pom.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="pCleanMainClass.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="pCleanMainClass.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="82" column="35" lean-forward="true" selection-start-line="82" selection-start-column="35" selection-end-line="82" selection-end-column="35" />
+            <state relative-caret-position="225">
+              <caret line="37" column="40" lean-forward="false" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
               <folding>
                 <element signature="e#7589#7604#0" expanded="true" />
                 <element signature="e#14817#14832#0" expanded="true" />
                 <element signature="e#21739#21776#0" expanded="true" />
                 <element signature="e#28411#28448#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JPeak.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-              <folding>
-                <element signature="e#2350#2351#0" expanded="true" />
-                <element signature="e#2394#2395#0" expanded="true" />
-                <element signature="e#2428#2429#0" expanded="true" />
-                <element signature="e#2461#2462#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PeakMatch.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-5550">
-              <caret line="71" column="25" lean-forward="true" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#2560#2570#0" expanded="true" />
-                <element signature="e#7597#7604#0" expanded="true" />
-                <element signature="e#8828#8835#0" expanded="true" />
-                <element signature="e#10214#10215#0" expanded="true" />
-                <element signature="e#10245#10246#0" expanded="true" />
-                <element signature="e#10418#10419#0" expanded="true" />
-                <element signature="e#10458#10459#0" expanded="true" />
-                <element signature="e#10508#10509#0" expanded="true" />
-                <element signature="e#10538#10539#0" expanded="true" />
-                <element signature="e#10600#10601#0" expanded="true" />
-                <element signature="e#10638#10639#0" expanded="true" />
-                <element signature="e#10677#10678#0" expanded="true" />
-                <element signature="e#10709#10710#0" expanded="true" />
-                <element signature="e#10859#10860#0" expanded="true" />
-                <element signature="e#10901#10902#0" expanded="true" />
-                <element signature="e#11015#11025#0" expanded="true" />
-                <element signature="e#11210#11211#0" expanded="true" />
-                <element signature="e#11247#11248#0" expanded="true" />
-                <element signature="e#11307#11308#0" expanded="true" />
-                <element signature="e#11359#11360#0" expanded="true" />
-                <element signature="e#11386#11387#0" expanded="true" />
-                <element signature="e#11418#11419#0" expanded="true" />
-                <element signature="e#11451#11452#0" expanded="true" />
-                <element signature="e#11480#11481#0" expanded="true" />
-                <element signature="e#12373#12380#0" expanded="true" />
-                <element signature="e#12897#12898#0" expanded="true" />
-                <element signature="e#12942#12943#0" expanded="true" />
-                <element signature="e#14041#14058#0" expanded="true" />
-                <element signature="e#14117#14135#0" expanded="true" />
-                <element signature="e#18281#18290#0" expanded="true" />
-                <element signature="e#20199#20200#0" expanded="true" />
-                <element signature="e#20234#20235#0" expanded="true" />
-                <element signature="e#20291#20292#0" expanded="true" />
-                <element signature="e#20339#20340#0" expanded="true" />
-                <element signature="e#20379#20380#0" expanded="true" />
-                <element signature="e#20408#20409#0" expanded="true" />
-                <element signature="e#20455#20456#0" expanded="true" />
-                <element signature="e#20482#20483#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JSpectrum.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/JSpectrum.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="728" column="40" lean-forward="false" selection-start-line="728" selection-start-column="40" selection-end-line="728" selection-end-column="40" />
-              <folding>
-                <element signature="e#26802#26803#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ReadmzID.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/ReadmzID.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="22" column="73" lean-forward="false" selection-start-line="22" selection-start-column="73" selection-end-line="22" selection-end-column="73" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#412#413#0" expanded="true" />
-                <element signature="e#448#449#0" expanded="true" />
-                <element signature="e#795#801#0" expanded="true" />
-                <element signature="e#1322#1330#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JPSM.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/JPSM.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-675">
-              <caret line="511" column="0" lean-forward="false" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#710#725#0" expanded="true" />
-                <element signature="e#945#953#0" expanded="true" />
-                <element signature="e#1394#1400#0" expanded="true" />
-                <element signature="e#1884#1892#0" expanded="true" />
-                <element signature="e#1963#1971#0" expanded="true" />
-                <element signature="e#2301#2302#0" expanded="true" />
-                <element signature="e#2334#2335#0" expanded="true" />
-                <element signature="e#2367#2368#0" expanded="true" />
-                <element signature="e#2403#2404#0" expanded="true" />
-                <element signature="e#2446#2447#0" expanded="true" />
-                <element signature="e#2483#2484#0" expanded="true" />
-                <element signature="e#2520#2521#0" expanded="true" />
-                <element signature="e#2560#2561#0" expanded="true" />
-                <element signature="e#2859#2878#0" expanded="true" />
-                <element signature="e#3336#3344#0" expanded="true" />
-                <element signature="e#3435#3467#1" expanded="true" />
-                <element signature="e#3992#4011#0" expanded="true" />
-                <element signature="e#4579#4587#0" expanded="true" />
-                <element signature="e#5928#5929#0" expanded="true" />
-                <element signature="e#5961#5962#0" expanded="true" />
-                <element signature="e#6014#6015#0" expanded="true" />
-                <element signature="e#6053#6054#0" expanded="true" />
-                <element signature="e#6091#6092#0" expanded="true" />
-                <element signature="e#6127#6128#0" expanded="true" />
-                <element signature="e#6183#6184#0" expanded="true" />
-                <element signature="e#6228#6229#0" expanded="true" />
-                <element signature="e#6262#6263#0" expanded="true" />
-                <element signature="e#6291#6292#0" expanded="true" />
-                <element signature="e#6336#6337#0" expanded="true" />
-                <element signature="e#6372#6373#0" expanded="true" />
-                <element signature="e#6434#6435#0" expanded="true" />
-                <element signature="e#6473#6474#0" expanded="true" />
-                <element signature="e#6541#6542#0" expanded="true" />
-                <element signature="e#6596#6597#0" expanded="true" />
-                <element signature="e#6625#6626#0" expanded="true" />
-                <element signature="e#6652#6653#0" expanded="true" />
-                <element signature="e#6690#6691#0" expanded="true" />
-                <element signature="e#6722#6723#0" expanded="true" />
-                <element signature="e#6753#6754#0" expanded="true" />
-                <element signature="e#6782#6783#0" expanded="true" />
-                <element signature="e#6824#6825#0" expanded="true" />
-                <element signature="e#6860#6861#0" expanded="true" />
-                <element signature="e#6910#6911#0" expanded="true" />
-                <element signature="e#6955#6956#0" expanded="true" />
-                <element signature="e#7152#7153#0" expanded="true" />
-                <element signature="e#7199#7200#0" expanded="true" />
-                <element signature="e#7386#7387#0" expanded="true" />
-                <element signature="e#7415#7416#0" expanded="true" />
-                <element signature="e#7460#7461#0" expanded="true" />
-                <element signature="e#7496#7497#0" expanded="true" />
-                <element signature="e#7542#7543#0" expanded="true" />
-                <element signature="e#7573#7574#0" expanded="true" />
-                <element signature="e#7616#7617#0" expanded="true" />
-                <element signature="e#7654#7655#0" expanded="true" />
-                <element signature="e#7695#7696#0" expanded="true" />
-                <element signature="e#7736#7737#0" expanded="true" />
-                <element signature="e#7791#7792#0" expanded="true" />
-                <element signature="e#7838#7839#0" expanded="true" />
-                <element signature="e#7872#7873#0" expanded="true" />
-                <element signature="e#7901#7902#0" expanded="true" />
-                <element signature="e#7945#7946#0" expanded="true" />
-                <element signature="e#7981#7982#0" expanded="true" />
-                <element signature="e#8021#8022#0" expanded="true" />
-                <element signature="e#8057#8058#0" expanded="true" />
-                <element signature="e#8115#8116#0" expanded="true" />
-                <element signature="e#8165#8166#0" expanded="true" />
-                <element signature="e#8215#8216#0" expanded="true" />
-                <element signature="e#8264#8265#0" expanded="true" />
-                <element signature="e#8473#8474#0" expanded="true" />
-                <element signature="e#8524#8525#0" expanded="true" />
-                <element signature="e#8743#8744#0" expanded="true" />
-                <element signature="e#8782#8783#0" expanded="true" />
-                <element signature="e#8832#8833#0" expanded="true" />
-                <element signature="e#8877#8878#0" expanded="true" />
-                <element signature="e#8930#8931#0" expanded="true" />
-                <element signature="e#8968#8969#0" expanded="true" />
-                <element signature="e#9158#9159#0" expanded="true" />
-                <element signature="e#9188#9189#0" expanded="true" />
-                <element signature="e#9233#9234#0" expanded="true" />
-                <element signature="e#9271#9272#0" expanded="true" />
-                <element signature="e#9436#9437#0" expanded="true" />
-                <element signature="e#9467#9468#0" expanded="true" />
-                <element signature="e#9515#9516#0" expanded="true" />
-                <element signature="e#9555#9556#0" expanded="true" />
-                <element signature="e#9659#9660#0" expanded="true" />
-                <element signature="e#9698#9699#0" expanded="true" />
-                <element signature="e#9802#9803#0" expanded="true" />
-                <element signature="e#9838#9839#0" expanded="true" />
-                <element signature="e#9872#9873#0" expanded="true" />
-                <element signature="e#9903#9904#0" expanded="true" />
-                <element signature="e#9950#9951#0" expanded="true" />
-                <element signature="e#9990#9991#0" expanded="true" />
-                <element signature="e#10027#10028#0" expanded="true" />
-                <element signature="e#10061#10062#0" expanded="true" />
-                <element signature="e#10114#10115#0" expanded="true" />
-                <element signature="e#10160#10161#0" expanded="true" />
-                <element signature="e#15300#15301#0" expanded="true" />
-                <element signature="e#15328#15329#0" expanded="true" />
-                <element signature="e#15369#15370#0" expanded="true" />
-                <element signature="e#15403#15404#0" expanded="true" />
-                <element signature="e#15435#15436#0" expanded="true" />
-                <element signature="e#15464#15465#0" expanded="true" />
-                <element signature="e#15507#15508#0" expanded="true" />
-                <element signature="e#15543#15544#0" expanded="true" />
-                <element signature="e#15571#15572#0" expanded="true" />
-                <element signature="e#15596#15597#0" expanded="true" />
-                <element signature="e#15631#15632#0" expanded="true" />
-                <element signature="e#15659#15660#0" expanded="true" />
-                <element signature="e#15697#15698#0" expanded="true" />
-                <element signature="e#15732#15733#0" expanded="true" />
-                <element signature="e#15787#15788#0" expanded="true" />
-                <element signature="e#15830#15831#0" expanded="true" />
-                <element signature="e#15867#15868#0" expanded="true" />
-                <element signature="e#15901#15902#0" expanded="true" />
-                <element signature="e#15954#15955#0" expanded="true" />
-                <element signature="e#16000#16001#0" expanded="true" />
-                <element signature="e#16032#16033#0" expanded="true" />
-                <element signature="e#16061#16062#0" expanded="true" />
-                <element signature="e#16104#16105#0" expanded="true" />
-                <element signature="e#16140#16141#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JModification.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/JModification.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="195">
-              <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-              <folding>
-                <element signature="e#332#333#0" expanded="true" />
-                <element signature="e#366#367#0" expanded="true" />
-                <element signature="e#416#417#0" expanded="true" />
-                <element signature="e#462#463#0" expanded="true" />
-                <element signature="e#495#496#0" expanded="true" />
-                <element signature="e#525#526#0" expanded="true" />
-                <element signature="e#570#571#0" expanded="true" />
-                <element signature="e#608#609#0" expanded="true" />
-                <element signature="e#646#647#0" expanded="true" />
-                <element signature="e#681#682#0" expanded="true" />
-                <element signature="e#736#737#0" expanded="true" />
-                <element signature="e#784#785#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -315,6 +47,11 @@
         <option value="Class" />
       </list>
     </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>No ions matched</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -335,11 +72,11 @@
         <option value="$PROJECT_DIR$/src/main/java/MZIDparser/JPSM.java" />
         <option value="$PROJECT_DIR$/src/main/java/MZIDparser/ReadmzID.java" />
         <option value="$PROJECT_DIR$/src/main/java/Preprocessing/JSpectrum.java" />
-        <option value="$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java" />
         <option value="$PROJECT_DIR$/src/main/java/MZIDparser/PAminoAcid.java" />
         <option value="$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java" />
         <option value="$PROJECT_DIR$/src/main/java/MZIDparser/CalcFeature.java" />
         <option value="$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java" />
+        <option value="$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java" />
       </list>
     </option>
   </component>
@@ -459,6 +196,7 @@
   </component>
   <component name="RunManager" selected="Application.pCleanMainClass">
     <configuration default="false" name="pCleanMainClass" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <output_file path="$USER_HOME$/Downloads/20180703_pClean/test.log" is_save="true" />
       <extension name="coverage" enabled="false" merge="false" sample_coverage="true" runner="idea">
         <pattern>
           <option name="PATTERN" value="Preprocessing.*" />
@@ -467,7 +205,7 @@
       </extension>
       <option name="MAIN_CLASS_NAME" value="Preprocessing.pCleanMainClass" />
       <option name="VM_PARAMETERS" value="" />
-      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="-a2 -itol 0.05 -i &quot;$USER_HOME$/Downloads/20180703_pClean/jurkat.frac1.mgf&quot; -mzid &quot;$USER_HOME$/Downloads/20180703_pClean/jurkat.frac1.mzid&quot; -o &quot;$USER_HOME$/Downloads/20180703_pClean/network&quot; -mionFilter -isoReduction -chargeDeconv -largerThanPrecursor -ionsMarge" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
@@ -835,14 +573,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/pom.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="225">
-          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/com/compomics/mascotdatfile/3.6.0/mascotdatfile-3.6.0.jar!/com/compomics/mascotdatfile/util/mascot/QueryToPeptideMap.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="128">
@@ -879,10 +609,114 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/PAminoAcid.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="37" column="13" lean-forward="false" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#252#266#0" expanded="true" />
+            <element signature="e#1553#1559#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/CalcFeature.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="140" column="120" lean-forward="false" selection-start-line="140" selection-start-column="120" selection-end-line="140" selection-end-column="120" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#517#544#0" expanded="true" />
+            <element signature="e#618#645#0" expanded="true" />
+            <element signature="e#758#759#0" expanded="true" />
+            <element signature="e#795#796#0" expanded="true" />
+            <element signature="e#10267#10284#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/commons-cli/commons-cli/1.4/commons-cli-1.4.jar!/org/apache/commons/cli/DefaultParser.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="113">
+          <caret line="260" column="16" lean-forward="true" selection-start-line="260" selection-start-column="16" selection-end-line="260" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="810">
+          <caret line="54" column="42" lean-forward="false" selection-start-line="54" selection-start-column="42" selection-end-line="54" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2560#2570#0" expanded="true" />
+            <element signature="e#6976#6983#0" expanded="true" />
+            <element signature="e#8170#8177#0" expanded="true" />
+            <element signature="e#9536#9537#0" expanded="true" />
+            <element signature="e#9567#9568#0" expanded="true" />
+            <element signature="e#9740#9741#0" expanded="true" />
+            <element signature="e#9780#9781#0" expanded="true" />
+            <element signature="e#9830#9831#0" expanded="true" />
+            <element signature="e#9860#9861#0" expanded="true" />
+            <element signature="e#9922#9923#0" expanded="true" />
+            <element signature="e#9960#9961#0" expanded="true" />
+            <element signature="e#9999#10000#0" expanded="true" />
+            <element signature="e#10031#10032#0" expanded="true" />
+            <element signature="e#10181#10182#0" expanded="true" />
+            <element signature="e#10223#10224#0" expanded="true" />
+            <element signature="e#10337#10347#0" expanded="true" />
+            <element signature="e#10532#10533#0" expanded="true" />
+            <element signature="e#10569#10570#0" expanded="true" />
+            <element signature="e#10629#10630#0" expanded="true" />
+            <element signature="e#10681#10682#0" expanded="true" />
+            <element signature="e#10708#10709#0" expanded="true" />
+            <element signature="e#10740#10741#0" expanded="true" />
+            <element signature="e#10773#10774#0" expanded="true" />
+            <element signature="e#10802#10803#0" expanded="true" />
+            <element signature="e#11695#11702#0" expanded="true" />
+            <element signature="e#12219#12220#0" expanded="true" />
+            <element signature="e#12264#12265#0" expanded="true" />
+            <element signature="e#13363#13380#0" expanded="true" />
+            <element signature="e#13439#13457#0" expanded="true" />
+            <element signature="e#16984#16993#0" expanded="true" />
+            <element signature="e#18625#18626#0" expanded="true" />
+            <element signature="e#18660#18661#0" expanded="true" />
+            <element signature="e#18717#18718#0" expanded="true" />
+            <element signature="e#18765#18766#0" expanded="true" />
+            <element signature="e#18805#18806#0" expanded="true" />
+            <element signature="e#18834#18835#0" expanded="true" />
+            <element signature="e#18881#18882#0" expanded="true" />
+            <element signature="e#18908#18909#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="300">
+          <caret line="22" column="42" lean-forward="false" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
+          <folding>
+            <element signature="e#2350#2351#0" expanded="true" />
+            <element signature="e#2394#2395#0" expanded="true" />
+            <element signature="e#2428#2429#0" expanded="true" />
+            <element signature="e#2461#2462#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="18" column="0" lean-forward="true" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/JModification.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="195">
-          <caret line="15" column="0" lean-forward="false" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="-90">
+          <caret line="12" column="27" lean-forward="true" selection-start-line="12" selection-start-column="27" selection-end-line="12" selection-end-column="27" />
           <folding>
             <element signature="e#332#333#0" expanded="true" />
             <element signature="e#366#367#0" expanded="true" />
@@ -902,8 +736,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/JPSM.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-675">
-          <caret line="511" column="0" lean-forward="false" selection-start-line="511" selection-start-column="0" selection-end-line="511" selection-end-column="0" />
+        <state relative-caret-position="8430">
+          <caret line="562" column="27" lean-forward="true" selection-start-line="562" selection-start-column="27" selection-end-line="562" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#710#725#0" expanded="true" />
@@ -1030,120 +864,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/PAminoAcid.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="37" column="13" lean-forward="false" selection-start-line="37" selection-start-column="13" selection-end-line="37" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#252#266#0" expanded="true" />
-            <element signature="e#1553#1559#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/JPeak.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="16" column="16" lean-forward="false" selection-start-line="16" selection-start-column="16" selection-end-line="16" selection-end-column="16" />
-          <folding>
-            <element signature="e#2350#2351#0" expanded="true" />
-            <element signature="e#2394#2395#0" expanded="true" />
-            <element signature="e#2428#2429#0" expanded="true" />
-            <element signature="e#2461#2462#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/CalcFeature.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="140" column="120" lean-forward="false" selection-start-line="140" selection-start-column="120" selection-end-line="140" selection-end-column="120" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#517#544#0" expanded="true" />
-            <element signature="e#618#645#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#795#796#0" expanded="true" />
-            <element signature="e#10267#10284#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/commons-cli/commons-cli/1.4/commons-cli-1.4.jar!/org/apache/commons/cli/DefaultParser.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="113">
-          <caret line="260" column="16" lean-forward="true" selection-start-line="260" selection-start-column="16" selection-end-line="260" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="82" column="35" lean-forward="true" selection-start-line="82" selection-start-column="35" selection-end-line="82" selection-end-column="35" />
-          <folding>
-            <element signature="e#7589#7604#0" expanded="true" />
-            <element signature="e#14817#14832#0" expanded="true" />
-            <element signature="e#21739#21776#0" expanded="true" />
-            <element signature="e#28411#28448#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/PeakMatch.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-5550">
-          <caret line="71" column="25" lean-forward="true" selection-start-line="71" selection-start-column="25" selection-end-line="71" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#2560#2570#0" expanded="true" />
-            <element signature="e#7597#7604#0" expanded="true" />
-            <element signature="e#8828#8835#0" expanded="true" />
-            <element signature="e#10214#10215#0" expanded="true" />
-            <element signature="e#10245#10246#0" expanded="true" />
-            <element signature="e#10418#10419#0" expanded="true" />
-            <element signature="e#10458#10459#0" expanded="true" />
-            <element signature="e#10508#10509#0" expanded="true" />
-            <element signature="e#10538#10539#0" expanded="true" />
-            <element signature="e#10600#10601#0" expanded="true" />
-            <element signature="e#10638#10639#0" expanded="true" />
-            <element signature="e#10677#10678#0" expanded="true" />
-            <element signature="e#10709#10710#0" expanded="true" />
-            <element signature="e#10859#10860#0" expanded="true" />
-            <element signature="e#10901#10902#0" expanded="true" />
-            <element signature="e#11015#11025#0" expanded="true" />
-            <element signature="e#11210#11211#0" expanded="true" />
-            <element signature="e#11247#11248#0" expanded="true" />
-            <element signature="e#11307#11308#0" expanded="true" />
-            <element signature="e#11359#11360#0" expanded="true" />
-            <element signature="e#11386#11387#0" expanded="true" />
-            <element signature="e#11418#11419#0" expanded="true" />
-            <element signature="e#11451#11452#0" expanded="true" />
-            <element signature="e#11480#11481#0" expanded="true" />
-            <element signature="e#12373#12380#0" expanded="true" />
-            <element signature="e#12897#12898#0" expanded="true" />
-            <element signature="e#12942#12943#0" expanded="true" />
-            <element signature="e#14041#14058#0" expanded="true" />
-            <element signature="e#14117#14135#0" expanded="true" />
-            <element signature="e#18281#18290#0" expanded="true" />
-            <element signature="e#20199#20200#0" expanded="true" />
-            <element signature="e#20234#20235#0" expanded="true" />
-            <element signature="e#20291#20292#0" expanded="true" />
-            <element signature="e#20339#20340#0" expanded="true" />
-            <element signature="e#20379#20380#0" expanded="true" />
-            <element signature="e#20408#20409#0" expanded="true" />
-            <element signature="e#20455#20456#0" expanded="true" />
-            <element signature="e#20482#20483#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/JSpectrum.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="728" column="40" lean-forward="false" selection-start-line="728" selection-start-column="40" selection-end-line="728" selection-end-column="40" />
+        <state relative-caret-position="255">
+          <caret line="760" column="13" lean-forward="false" selection-start-line="760" selection-start-column="13" selection-end-line="760" selection-end-column="13" />
           <folding>
+            <element signature="e#26764#26765#0" expanded="true" />
             <element signature="e#26802#26803#0" expanded="true" />
           </folding>
         </state>
@@ -1151,14 +877,27 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/MZIDparser/ReadmzID.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="22" column="73" lean-forward="false" selection-start-line="22" selection-start-column="73" selection-end-line="22" selection-end-column="73" />
+        <state relative-caret-position="120">
+          <caret line="145" column="0" lean-forward="true" selection-start-line="145" selection-start-column="0" selection-end-line="145" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#412#413#0" expanded="true" />
             <element signature="e#448#449#0" expanded="true" />
             <element signature="e#795#801#0" expanded="true" />
             <element signature="e#1322#1330#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/Preprocessing/pCleanMainClass.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="37" column="40" lean-forward="false" selection-start-line="37" selection-start-column="40" selection-end-line="37" selection-end-column="40" />
+          <folding>
+            <element signature="e#7589#7604#0" expanded="true" />
+            <element signature="e#14817#14832#0" expanded="true" />
+            <element signature="e#21739#21776#0" expanded="true" />
+            <element signature="e#28411#28448#0" expanded="true" />
           </folding>
         </state>
       </provider>
