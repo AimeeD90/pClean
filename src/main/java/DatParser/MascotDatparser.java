@@ -14,13 +14,13 @@ public class MascotDatparser {
     public MascotDatparser() {
     }
 
-    public ArrayList<dPSM> fragAnnotation(String dat) {
+    public ArrayList<SpectrumAnnotationContainer> fragAnnotation(String dat) {
 
         MascotDatfile mdf = new MascotDatfile(dat);
-        PeptideToQueryMap lPeptide2Q = mdf.getPeptideToQueryMap();
+        //PeptideToQueryMap lPeptide2Q = mdf.getPeptideToQueryMap();
         QueryToPeptideMap lQuery2P = mdf.getQueryToPeptideMap();
 
-        ArrayList<dPSM> psms = new ArrayList<dPSM>();
+        ArrayList<SpectrumAnnotationContainer> psms = new ArrayList<SpectrumAnnotationContainer>();
         for (int j = 1; j <= lQuery2P.getNumberOfQueries(); j++) {
             Query lQuery = mdf.getQuery(j);
             PeptideHit ph = lQuery2P.getPeptideHitOfOneQuery(j, 1);
@@ -37,7 +37,7 @@ public class MascotDatparser {
                     //System.out.println(lQuery.getFilename() + fm.getType() + fm.getNumber() + "\t" + fragmz);
                 }
 
-                dPSM psm = new dPSM(lQuery.getFilename(),fragannotation);
+                SpectrumAnnotationContainer psm = new SpectrumAnnotationContainer(lQuery.getFilename(),fragannotation);
                 psms.add(psm);
             }
         }

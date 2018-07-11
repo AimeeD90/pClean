@@ -25,6 +25,8 @@ public class JSpectrum {
 
     /*set the list of immonium ions*/
     public static HashMap<Double, String> ImmoniumIons = new HashMap<Double, String>();
+    private double totalIonCurrent;
+
     public static void setImmoniumIons(){
         ImmoniumIons.put(30.03, "G");
         ImmoniumIons.put(44.05, "A");
@@ -722,6 +724,10 @@ public class JSpectrum {
             }
         }
         getPeaks().removeAll(filer);
+    }
+
+    public double getTotalIonCurrent() {
+        return totalIonCurrent;
     }
 
 

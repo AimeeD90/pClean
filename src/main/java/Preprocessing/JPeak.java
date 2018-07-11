@@ -14,6 +14,7 @@ public class JPeak implements Cloneable {
     private boolean isotopePrediction = false;
     public double isMatch = -1;
     public boolean remove = false;
+    private int intenClass;
 
     public boolean isIsotopePrediction() {
         return isotopePrediction;
@@ -110,6 +111,13 @@ public class JPeak implements Cloneable {
         this.charge = charge;
     }
 
+    public void setIntenClass(int intenClass) {
+        this.intenClass = intenClass;
+    }
+
+    public int getIntenClass() {
+        return intenClass;
+    }
 }
 
 /*

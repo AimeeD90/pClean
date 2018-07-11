@@ -5,16 +5,16 @@ import java.util.HashMap;
 /**
  * Created by dengyamei on 10/07/2018.
  */
-public class dPSM {
+public class SpectrumAnnotationContainer {
     private String spectrumID;
     private HashMap<Double, String> fragannotation = new HashMap<>();
 
-    public dPSM(String spectrumID, HashMap<Double, String> fragannotation) {
+    public SpectrumAnnotationContainer(String spectrumID, HashMap<Double, String> fragannotation) {
         this.spectrumID = spectrumID;
         this.fragannotation = fragannotation;
     }
 
-    public dPSM() {
+    public SpectrumAnnotationContainer() {
     }
 
     public String getSpectrumID() {
