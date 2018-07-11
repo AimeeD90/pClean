@@ -47,8 +47,7 @@ public class pCleanMainClass {
         options.addOption("ionsMerge", false, "merge two adjacent peaks within a mass tolerance of 20ppm");
         options.addOption("largerThanPrecursor", false, "remove peaks larger than precursor");
         options.addOption("a2", false, "Consider gap masses of two amino acids");
-        options.addOption("mzid", true, "mzIdentML file");
-        options.addOption("dat", true, "dat file");
+        options.addOption("idres", true, "Identification result");
         options.addOption("h", false, "Help info");
 
         CommandLineParser parser = new DefaultParser();
@@ -99,22 +98,24 @@ public class pCleanMainClass {
         }
 
         String outlog = outdir+"/spectrumInfor.txt";
-        if (cmd.hasOption("mzid")) {
-            String mzid = cmd.getOptionValue("mzid");
-            if (labelMethod != null) {
-                doParseMzid123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, mzid);
-            } else {
-                doParseMzid23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, mzid);
+        if (cmd.hasOption("idres")) {
+            String idres = cmd.getOptionValue("idres");
+            if (idres.endsWith(".mzid")) {
+                String mzid = cmd.getOptionValue("mzid");
+                if (labelMethod != null) {
+                    doParseMzid123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, idres);
+                } else {
+                    doParseMzid23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, idres);
+                }
+                //doParseMzid(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, idres);
+            } else if (idres.endsWith(".dat")) {
+                String dat = cmd.getOptionValue("dat");
+                if (labelMethod != null) {
+                    doParseDat123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, idres);
+                } else {
+                    doParseDat23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, idres);
+                }
             }
-            //doParseMzid(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, mzid);
-        } else if (cmd.hasOption("dat")) {
-            String dat = cmd.getOptionValue("dat");
-            if (labelMethod != null) {
-                doParseDat123(mgf, outdir, outlog, imonFilter, labelMethod, repFilter, labelFilter, lowWinFilter, highWinFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, dat);
-            } else {
-                doParseDat23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor, dat);
-            }
-
         } else {
             if (labelMethod != null) {
                 //System.out.println(mgf + "\n" + outdir + "\n" + outlog + "\n" + imonFilter + "\n" + labelMethod + "\n" + repFilter + "\n" + labelFilter + "\n" + lowWinFilter + "\n" + highWinFilter + "\n" + isoReduction + "\n" + chargeDeconv + "\n" + ionsMarge + "\n" + largerThanPrecursor);
@@ -130,6 +131,8 @@ public class pCleanMainClass {
                 doPreprocessing23(mgf, outdir, outlog, imonFilter, isoReduction, chargeDeconv, ionsMerge, largerThanPrecursor);
             }
         }
+
+
     }
 
     private static void doParseMzid123(String mgf, String outdir, String outlog, Boolean imonFilter, String labelMethod, Boolean repFilter, Boolean labelFilter, Boolean lowWinFilter, Boolean highWinFilter, Boolean isoReduction, Boolean chargeDeconv, Boolean ionsMerge, Boolean largerThanPrecursor, String mzid) throws IOException, MzMLUnmarshallerException, JAXBException, ClassNotFoundException, SQLException, MathException, InterruptedException {
