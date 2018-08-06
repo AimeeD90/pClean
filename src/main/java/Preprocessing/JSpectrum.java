@@ -1,5 +1,6 @@
 package Preprocessing;
 
+import com.compomics.util.experiment.biology.aminoacids.J;
 import com.compomics.util.experiment.biology.ions.ElementaryIon;
 
 import java.util.*;
@@ -331,6 +332,24 @@ public class JSpectrum {
     }
 
 
+    /*convert a JSpectrum object to a StringBuilder object carrying MGF format*/
+    public StringBuilder toMgf() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("BEGIN IONS\n");
+        sb.append("TITLE=" + getSpectrumTitle() + "\n");
+        sb.append("PEPMASS=" + getParentMassToCharge() + " " + getIntensity() + "\n");
+        sb.append("CHARGE=" + getCharge() + "+\n");
+        if (getRt() > 0) {
+            sb.append("RTINSECONDS=" + getRt() + "\n");
+        }
+        for (JPeak jPeak : getPeaks()) {
+            sb.append(jPeak.getMz() + " " + jPeak.getIntensity() + "\n");
+        }
+        sb.append("END IONS\n");
+        return sb;
+    }
+
+
     /*
     * Module 1. removal of label-associated ions and of b-/y-ions free windows
     *
@@ -446,7 +465,8 @@ public class JSpectrum {
         //System.out.println("after-" + getPeaks().size());
     }
 
-    private void doFilterLabelAssociatedIons(ArrayList<Double> reporters, double isobaric_tag, Boolean reporter) {
+
+    private void doFilterLabelAssociatedIonsBak(ArrayList<Double> reporters, double isobaric_tag, Boolean reporter) {
         ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
         double h = ElementaryIon.proton.getTheoreticMass();
         double labelH = isobaric_tag + h;
@@ -455,8 +475,10 @@ public class JSpectrum {
         double c = 12.0;
         double precusorMinuslabel = getParentMass() - isobaric_tag;
 
+        /*First of all, remove precursor mz and its isotopes (based on precursor charge) from the fragment ions list*/
         for (JPeak jPeak : getPeaks()) {
             double mz = jPeak.getMz();
+
             /*pClean is designed to preprocess high-resolution MS/MS data, so the */
             /*label-associated ions: label+ */
             if (Config.delta(labelH, mz) <= Config.ms2tol) {
@@ -476,6 +498,7 @@ public class JSpectrum {
                 uninformative.add(jPeak);
                 continue;
             }
+            /*reporter ions*/
             for (Double mass : reporters) {
                 /*remove reporter ions*/
                 if (reporter) {
@@ -502,9 +525,179 @@ public class JSpectrum {
                 }
             }
         }
+        getPeaks().removeAll(uninformative);
+    }
+
+    private void doFilterLabelAssociatedIons(ArrayList<Double> reporters, double isobaric_tag, Boolean reporter) {
+        ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
+        double h = 1.007825035;
+        double labelH = isobaric_tag + h;
+        double labelH2 = isobaric_tag + h * 2;
+        double o = 15.994915;
+        double c = 12.0;
+        double precusorMinuslabel = getParentMass() - isobaric_tag;
+        double preMZ = getParentMassToCharge();
+
+        /*First of all, remove precursor mz and its isotopes (based on precursor charge) from the fragment ions list*/
+        //ArrayList<Double> precEnvelope = predictPrecEnvelope();
+        for (JPeak jPeak : getPeaks()) {
+            double mz = jPeak.getMz();
+
+            /*pClean is designed to preprocess high-resolution MS/MS data, so the mass error is set as 0.05Da*/
+            /*label-associated ions: label+ */
+
+            // action 1: filter precursor ions from MS/MS spectrum
+            if (mz <= preMZ + 0.5 && mz >= preMZ - 0.5) {
+                //System.out.println(jPeak.getMz() + "\t" + "precursor range");
+                uninformative.add(jPeak);
+                continue;
+            }
+            // action 2: filter label+(labelH) ions from MS/MS spectrum  iTRAQ8plex 305.1092
+            if (Config.delta(mz, labelH) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "label+");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*label-associated ions: label++ */
+            // action 3: filter label++ (labelH2) ions from MS/MS spectrum
+            if (Config.delta(mz, labelH2) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "label++");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*label-associated ions: precursor-label+ */
+            // action 4: filter precusorMinuslabel ions from MS/MS spectrum
+            if (Config.delta(mz, precusorMinuslabel) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "precursor-label+");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*reporter ions*/
+            for (Double mass : reporters) {
+                /*remove reporter ions*/
+                if (reporter) {
+                    if (Config.delta(mass, mz) <= Config.ms2tol) {
+                        //System.out.println(jPeak.getMz() + "\t" + "reporter");
+                        uninformative.add(jPeak);
+                        break;
+                    }
+                }
+
+                double repCOH = mass + c + o + h;
+                double precusorMinusRepCOH = getParentMass() - repCOH;
+                /*label-associated ions: repCO+ */
+                if (Config.delta(repCOH, mz) <= Config.ms2tol) {
+                    //System.out.println(jPeak.getMz() + "\t" + "repCO+");
+                    uninformative.add(jPeak);
+                    break;
+                }
+                /*label-associated ions: precursor-repCO+ */
+                if (Config.delta(precusorMinusRepCOH, mz) <= Config.ms2tol) {
+                    //System.out.println(jPeak.getMz() + "\t" + "precursor-repCO+");
+                    uninformative.add(jPeak);
+                    break;
+                }
+            }
+            /*precursor isotopes*/
+            /*for (Double precEnv : precEnvelope) {
+                //if (Config.delta(precEnv, mz) <= Config.ms2tol) { // not suitable
+                if (Config.deltaPPM(precEnv, mz) <= 20) {
+                    uninformative.add(jPeak);
+                    break;
+                }
+            }*/
+        }
         //System.out.println("before-" + getPeaks().size());
         getPeaks().removeAll(uninformative);
         //System.out.println("after-" + getPeaks().size());
+    }
+
+    private void doFilterLabelAssociatedIonsOriginal(ArrayList<Double> reporters, double isobaric_tag, Boolean reporter) {
+        ArrayList<JPeak> uninformative = new ArrayList<JPeak>();
+        double h = 1.007825035;
+        double labelH = isobaric_tag + h;
+        double labelH2 = isobaric_tag + h * 2;
+        double o = 15.994915;
+        double c = 12.0;
+        double precusorMinuslabel = getParentMass() - isobaric_tag;
+
+        /*First of all, remove precursor mz and its isotopes (based on precursor charge) from the fragment ions list*/
+        ArrayList<Double> precEnvelope = predictPrecEnvelope();
+        for (JPeak jPeak : getPeaks()) {
+            double mz = jPeak.getMz();
+
+            /*pClean is designed to preprocess high-resolution MS/MS data, so the */
+            /*label-associated ions: label+ */
+            if (Config.delta(labelH, mz) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "label+");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*label-associated ions: label++ */
+            if (Config.delta(labelH2, mz) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "label++");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*label-associated ions: precursor-label+ */
+            if (Config.delta(precusorMinuslabel, mz) <= Config.ms2tol) {
+                //System.out.println(jPeak.getMz() + "\t" + "precursor-label+");
+                uninformative.add(jPeak);
+                continue;
+            }
+            /*reporter ions*/
+            for (Double mass : reporters) {
+                /*remove reporter ions*/
+                if (reporter) {
+                    if (Config.delta(mass, mz) <= Config.ms2tol) {
+                        //System.out.println(jPeak.getMz() + "\t" + "reporter");
+                        uninformative.add(jPeak);
+                        break;
+                    }
+                }
+
+                double repCOH = mass + c + o + h;
+                double precusorMinusRepCOH = getParentMass() - repCOH;
+                /*label-associated ions: repCO+ */
+                if (Config.delta(repCOH, mz) <= Config.ms2tol) {
+                    //System.out.println(jPeak.getMz() + "\t" + "repCO+");
+                    uninformative.add(jPeak);
+                    break;
+                }
+                /*label-associated ions: precursor-repCO+ */
+                if (Config.delta(precusorMinusRepCOH, mz) <= Config.ms2tol) {
+                    //System.out.println(jPeak.getMz() + "\t" + "precursor-repCO+");
+                    uninformative.add(jPeak);
+                    break;
+                }
+            }
+            /*precursor isotopes*/
+            for (Double precEnv : precEnvelope) {
+                //if (Config.delta(precEnv, mz) <= Config.ms2tol) { // not suitable
+                if (Config.deltaPPM(precEnv, mz) <= 20) {
+                    uninformative.add(jPeak);
+                    break;
+                }
+            }
+        }
+        //System.out.println("before-" + getPeaks().size());
+        getPeaks().removeAll(uninformative);
+        //System.out.println("after-" + getPeaks().size());
+    }
+
+    /*predicted precursor isotopes m/z, only considering 1st and 2nd isotopes*/
+    public ArrayList<Double> predictPrecEnvelope() {
+        ArrayList<Double> precEnv = new ArrayList<>();
+        double neutron = 1.0033548;
+        double preMZ = getParentMassToCharge();
+        precEnv.add(preMZ);
+
+        double preMZiso1 = preMZ + neutron / getCharge();
+        precEnv.add(preMZiso1);
+        double preMZiso2 = preMZ + neutron / getCharge() * 2;
+        precEnv.add(preMZiso2);
+
+        return precEnv;
     }
 
 

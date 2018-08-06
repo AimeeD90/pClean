@@ -1,0 +1,13 @@
+<component name="libraryTable">
+  <library name="Maven: de.proteinms.xtandemparser:xtandem-parser:1.13.0">
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/proteinms/xtandemparser/xtandem-parser/1.13.0/xtandem-parser-1.13.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$MAVEN_REPOSITORY$/de/proteinms/xtandemparser/xtandem-parser/1.13.0/xtandem-parser-1.13.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$MAVEN_REPOSITORY$/de/proteinms/xtandemparser/xtandem-parser/1.13.0/xtandem-parser-1.13.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

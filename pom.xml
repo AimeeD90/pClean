@@ -45,6 +45,12 @@
             <version>3.6.0</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/de.proteinms.xtandemparser/xtandem-parser -->
+        <dependency>
+            <groupId>de.proteinms.xtandemparser</groupId>
+            <artifactId>xtandem-parser</artifactId>
+            <version>1.13.0</version>
+        </dependency>
 
         <dependency>
             <groupId>org.apache.maven.plugins</groupId>
@@ -62,11 +68,22 @@
         </license>
     </licenses>
 
-    <!--build-->
     <build>
+        <sourceDirectory>src/main/java</sourceDirectory>
+        <resources>
+            <resource>
+                <targetPath>.</targetPath>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
         <plugins>
             <!--compiler plugin-->
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.5</version>
                 <configuration>
@@ -75,22 +92,27 @@
                 </configuration>
             </plugin>
 
+            <!-- Assembly plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
                 <version>2.5.3</version>
                 <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>Preprocessing.pCleanMainClass</mainClass>
-                        </manifest>
-                    </archive>
                     <descriptorRefs>
                         <descriptorRef>
                             jar-with-dependencies
                         </descriptorRef>
                     </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                        <manifest>
+                            <mainClass>Preprocessing.pCleanMainClass</mainClass>
+                        </manifest>
+                    </archive>
                 </configuration>
+
                 <executions>
                     <execution>
                         <id>make-assembly</id>
@@ -102,50 +124,47 @@
                 </executions>
             </plugin>
 
-
-            <!-- Jar plugin -->
+            <!--maven shade plugin-->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>2.4</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                            <mainClass>Preprocessing.pCleanMainClass</mainClass>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib</classpathPrefix>
-                        </manifest>
-                    </archive>
-                    <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}
-                    </outputDirectory>
-                </configuration>
-            </plugin>
-
-            <!-- Dependency plugin -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
-                        <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>copy-dependencies</goal>
+                            <goal>shade</goal>
                         </goals>
                         <configuration>
-                            <outputDirectory>${project.build.directory}/${project.artifactId}-${project.version}/lib
-                            </outputDirectory>
-                            <overWriteReleases>true</overWriteReleases>
-                            <overWriteSnapshots>true</overWriteSnapshots>
-                            <excludeTransitive>false</excludeTransitive>
+                            <!-- <finalName>${project.artifactId}-${project.version}-jar-w-reduced-deps</finalName> -->
+                            <finalName>${project.artifactId}</finalName>
+                            <transformers>
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>Preprocessing.pCleanMainClass</mainClass>
+                                </transformer>
+                            </transformers>
+                            <filters>
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>META-INF/*.SF</exclude>
+                                        <exclude>META-INF/*.DSA</exclude>
+                                        <exclude>META-INF/*.RSA</exclude>
+                                    </excludes>
+                                </filter>
+
+                                <filter>
+                                    <artifact>*:*</artifact>
+                                    <excludes>
+                                        <exclude>**/.svn/**</exclude>
+                                        <!-- <exclude>**/*.java</exclude> -->
+                                    </excludes>
+                                </filter>
+                            </filters>
                         </configuration>
                     </execution>
                 </executions>
             </plugin>
-
-
         </plugins>
     </build>
 

@@ -1,7 +1,7 @@
 package Preprocessing;
 
 /**
- * Format output information in _edge.txt files.
+ * FDRutility.PsmsConverter output information in _edge.txt files.
  *
  * Created by dengyamei on 03/07/2018.
  */
